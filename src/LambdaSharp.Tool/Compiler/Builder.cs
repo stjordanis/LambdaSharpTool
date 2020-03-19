@@ -144,7 +144,13 @@ namespace LambdaSharp.Tool.Compiler {
         private readonly Dictionary<string, AItemDeclaration> _fullNameDeclarations = new Dictionary<string, AItemDeclaration>();
         private readonly HashSet<string> _logicalIds = new HashSet<string>();
         private readonly List<Grant> _grants = new List<Grant>();
-        private IDictionary<string, Dependency> _dependencies = new Dictionary<string, Dependency>();
+        private readonly IDictionary<string, Dependency> _dependencies = new Dictionary<string, Dependency>();
+
+        // TODO: declare custom resource types
+        private readonly List<CloudFormationModuleManifestResourceType> _customResourceTypes = new List<CloudFormationModuleManifestResourceType>();
+
+        // TODO: declare artifacts
+        public readonly List<string> _artifacts = new List<string>();
 
         //--- Constructors ---
         public Builder(IBuilderDependencyProvider provider) {
@@ -171,6 +177,8 @@ namespace LambdaSharp.Tool.Compiler {
         public ModuleInfo ModuleInfo => new ModuleInfo(ModuleNamespace, ModuleName, ModuleVersion, origin: ModuleInfo.MODULE_ORIGIN_PLACEHOLDER);
         public IEnumerable<AItemDeclaration> ItemDeclarations => _fullNameDeclarations.Values;
         public IEnumerable<Grant> Grants => _grants;
+        public IEnumerable<CloudFormationModuleManifestResourceType> CustomResourceTypes => _customResourceTypes;
+        public IEnumerable<string> Artifacts => _artifacts;
 
         //--- Methods ---
         public void Log(IBuildReportEntry entry, SourceLocation sourceLocation, bool exact)
@@ -224,10 +232,10 @@ namespace LambdaSharp.Tool.Compiler {
             _grants.Add(new Grant(name, awsType, reference, allow, condition));
         }
 
-        public async Task<Dependency> AddDependencyAsync(ModuleInfo moduleInfo, ModuleManifestDependencyType dependencyType, ASyntaxNode node) {
+        public async Task<Dependency> AddDependencyAsync(ModuleInfo moduleInfo, CloudFormationModuleManifestDependencyType dependencyType, ASyntaxNode node) {
             string moduleKey;
             switch(dependencyType) {
-            case ModuleManifestDependencyType.Nested:
+            case CloudFormationModuleManifestDependencyType.Nested:
 
                 // nested dependencies can reference different versions
                 moduleKey = moduleInfo.ToString();
@@ -235,7 +243,7 @@ namespace LambdaSharp.Tool.Compiler {
                     return null;
                 }
                 break;
-            case ModuleManifestDependencyType.Shared:
+            case CloudFormationModuleManifestDependencyType.Shared:
 
                 // shared dependencies can only have one version
                 moduleKey = moduleInfo.WithoutVersion().ToString();
@@ -326,7 +334,7 @@ namespace LambdaSharp.Tool.Compiler {
             }
         }
 
-        public async Task<ModuleLocation> ResolveInfoToLocationAsync(ModuleInfo moduleInfo, ModuleManifestDependencyType dependencyType, bool allowImport, bool showError, bool allowCaching) {
+        public async Task<ModuleLocation> ResolveInfoToLocationAsync(ModuleInfo moduleInfo, CloudFormationModuleManifestDependencyType dependencyType, bool allowImport, bool showError, bool allowCaching) {
             _provider.LogInfoVerbose($"... resolving module {moduleInfo}");
             var stopwatch = Stopwatch.StartNew();
             var cached = false;
@@ -343,7 +351,7 @@ namespace LambdaSharp.Tool.Compiler {
                     //  only contain versions that meet the module version constraint; for shared modules, we want to
                     //  keep the latest version that is compatible with the tool and is equal-or-greater than the
                     //  module version constraint.
-                    if((dependencyType != ModuleManifestDependencyType.Shared) && (moduleInfo.Version != null)) {
+                    if((dependencyType != CloudFormationModuleManifestDependencyType.Shared) && (moduleInfo.Version != null)) {
                         foundCached = foundCached.Where(version => version.MatchesConstraint(moduleInfo.Version)).ToList();
                     }
 
@@ -435,7 +443,7 @@ namespace LambdaSharp.Tool.Compiler {
                 //  only contain versions that meet the module version constraint; for shared modules, we want to
                 //  keep the latest version that is compatible with the tool and is equal-or-greater than the
                 //  module version constraint.
-                if((dependencyType != ModuleManifestDependencyType.Shared) && (moduleInfo.Version != null)) {
+                if((dependencyType != CloudFormationModuleManifestDependencyType.Shared) && (moduleInfo.Version != null)) {
                     found = found.Where(version => version.MatchesConstraint(moduleInfo.Version)).ToList();
                 }
 
@@ -504,7 +512,7 @@ namespace LambdaSharp.Tool.Compiler {
 
             // check if any of the imported dependencies have a matching resource type
             var matches = _dependencies
-                .Where(kv => kv.Value.Type == ModuleManifestDependencyType.Shared)
+                .Where(kv => kv.Value.Type == CloudFormationModuleManifestDependencyType.Shared)
                 .Select(kv => new {
                     Found = kv.Value.Manifest?.ResourceTypes.FirstOrDefault(existing => existing.Type == resourceTypeName),
                     From = kv.Key

@@ -420,7 +420,7 @@ namespace LambdaSharp.Tool.Compiler.Syntax {
 
         public override ASyntaxNode CloneNode() => new SelectFunctionExpression {
             Index = Index.Clone(),
-            Values = Values?.Clone()
+            Values = Values.Clone()
         };
     }
 

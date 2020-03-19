@@ -98,10 +98,10 @@ namespace LambdaSharp.Tool.Compiler.CloudFormation {
 
                     // no need to store LambdaSharp.Core dependency since the manifest already has a CoreServicesVersion property
                     .Where(dependency => dependency.ModuleLocation.ModuleInfo.FullName != "LambdaSharp.Core")
-                    .Select(dependency => new CloudFormationModuleManifestDependency {
-                        ModuleInfo = dependency.ModuleLocation.ModuleInfo,
-                        Type = dependency.Type
-                    })
+                    .Select(dependency => new CloudFormationModuleManifestDependency(
+                        dependency.ModuleLocation.ModuleInfo,
+                        dependency.Type
+                    ))
                     .OrderBy(dependency => dependency.ModuleInfo.ToString())
                     .ToList(),
                 ResourceTypes = _builder.CustomResourceTypes.ToList(),

@@ -227,10 +227,10 @@ namespace LambdaSharp.Tool.Compiler.CloudFormation {
         public VersionInfo? CoreServicesVersion { get; set; }
         public List<CloudFormationModuleManifestParameterSection> ParameterSections { get; set; } = new List<CloudFormationModuleManifestParameterSection>();
         public CloudFormationModuleManifestGitInfo? Git { get; set; }
-        public IList<string> Artifacts { get; set; } = new List<string>();
-        public IList<CloudFormationModuleManifestDependency> Dependencies { get; set; } = new List<CloudFormationModuleManifestDependency>();
-        public IList<CloudFormationModuleManifestResourceType> ResourceTypes { get; set; } = new List<CloudFormationModuleManifestResourceType>();
-        public IList<CloudFormationModuleManifestOutput> Outputs { get; set; } = new List<CloudFormationModuleManifestOutput>();
+        public List<string> Artifacts { get; set; } = new List<string>();
+        public List<CloudFormationModuleManifestDependency> Dependencies { get; set; } = new List<CloudFormationModuleManifestDependency>();
+        public List<CloudFormationModuleManifestResourceType> ResourceTypes { get; set; } = new List<CloudFormationModuleManifestResourceType>();
+        public List<CloudFormationModuleManifestOutput> Outputs { get; set; } = new List<CloudFormationModuleManifestOutput>();
 
         //--- Methods ---
         public string GetModuleTemplatePath() => ModuleInfo.GetArtifactPath($"cloudformation_{ModuleInfo.FullName}_{TemplateChecksum}.json");
@@ -300,9 +300,15 @@ namespace LambdaSharp.Tool.Compiler.CloudFormation {
 
     public class CloudFormationModuleManifestDependency {
 
+        //--- Constructors ---
+        public CloudFormationModuleManifestDependency(ModuleInfo moduleInfo, CloudFormationModuleManifestDependencyType type) {
+            ModuleInfo = moduleInfo ?? throw new ArgumentNullException(nameof(moduleInfo));
+            Type = type;
+        }
+
         //--- Properties ---
-        public ModuleInfo? ModuleInfo { get; set; }
-        public CloudFormationModuleManifestDependencyType Type { get; set; }
+        public ModuleInfo ModuleInfo { get; }
+        public CloudFormationModuleManifestDependencyType Type { get; }
     }
 
     public class CloudFormationModuleManifestParameterSection {

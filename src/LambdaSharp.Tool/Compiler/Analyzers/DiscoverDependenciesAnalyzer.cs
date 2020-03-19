@@ -18,6 +18,7 @@
 
 using System.Collections.Generic;
 using System.Linq;
+using LambdaSharp.Tool.Compiler.CloudFormation;
 using LambdaSharp.Tool.Compiler.Syntax;
 using LambdaSharp.Tool.Model;
 
@@ -70,7 +71,7 @@ namespace LambdaSharp.Tool.Compiler.Analyzers {
                 // add module reference as a shared dependency
                 _builder.AddDependencyAsync(
                     new ModuleInfo("LambdaSharp", "Core", _builder.CoreServicesReferenceVersion, "lambdasharp"),
-                    ModuleManifestDependencyType.Shared,
+                    CloudFormationModuleManifestDependencyType.Shared,
                     node: null
                 ).Wait();
             }
@@ -93,7 +94,7 @@ namespace LambdaSharp.Tool.Compiler.Analyzers {
                 }
 
                 // add module reference as a shared dependency
-                _builder.AddDependencyAsync(moduleInfo, ModuleManifestDependencyType.Shared, node.ModuleName).Wait();
+                _builder.AddDependencyAsync(moduleInfo, CloudFormationModuleManifestDependencyType.Shared, node.ModuleName).Wait();
             }
             return true;
         }
@@ -111,7 +112,7 @@ namespace LambdaSharp.Tool.Compiler.Analyzers {
                 }
 
                 // add module reference as a nested dependency
-                _builder.AddDependencyAsync(moduleInfo, ModuleManifestDependencyType.Nested, node.Module).Wait();
+                _builder.AddDependencyAsync(moduleInfo, CloudFormationModuleManifestDependencyType.Nested, node.Module).Wait();
             }
             return true;
         }
