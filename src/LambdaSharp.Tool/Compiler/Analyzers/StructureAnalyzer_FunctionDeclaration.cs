@@ -55,7 +55,7 @@ namespace LambdaSharp.Tool.Compiler.Analyzers {
 
             // register item declaration
             _builder.RegisterItemDeclaration(node);
-            node.ReferenceExpression = FnRef(node.FullName, resolved: true);
+            node.ReferenceExpression = Fn.Ref(node.FullName, resolved: true);
 
             // validate attributes
             ValidateExpressionIsNumber(node, node.Memory, Error.MemoryAttributeInvalid);
@@ -117,7 +117,7 @@ namespace LambdaSharp.Tool.Compiler.Analyzers {
                 }
 
                 // update 'Project' attribute with known project file that exists
-                node.Project = Literal(project);
+                node.Project = Fn.Literal(project);
 
                 // fill in missing attributes based on function type
                 switch(Path.GetExtension(project).ToLowerInvariant()) {
@@ -145,7 +145,7 @@ namespace LambdaSharp.Tool.Compiler.Analyzers {
 
                 // initialize dead-letter queue
                 node.Properties["DeadLetterConfig"] = new ObjectExpression {
-                    ["TargetArn"] = FnRef("Module::DeadLetterQueue")
+                    ["TargetArn"] = Fn.Ref("Module::DeadLetterQueue")
                 };
             }
 
@@ -153,48 +153,48 @@ namespace LambdaSharp.Tool.Compiler.Analyzers {
             if((node.If != null) && !(node.If is ConditionExpression)) {
 
                 // convert conditional expression to a condition literal
-                var condition = AddDeclaration(node, new ConditionDeclaration(Literal("If")) {
+                var condition = AddDeclaration(node, new ConditionDeclaration(Fn.Literal("If")) {
                     Value = node.If
                 });
-                node.If = FnCondition(condition.FullName);
+                node.If = Fn.Condition(condition.FullName);
             }
 
 
             // initialize 'Properties' attribute
             if(node.Description != null) {
-                SetProperty("Description", Literal(node.Description.Value.TrimEnd() + $" (v{_builder.ModuleVersion.ToString()})"));
+                SetProperty("Description", Fn.Literal(node.Description.Value.TrimEnd() + $" (v{_builder.ModuleVersion.ToString()})"));
             }
             SetProperty("Timeout", node.Timeout);
             SetProperty("Runtime", node.Runtime);
             SetProperty("MemorySize", node.Memory);
             SetProperty("Handler", node.Handler);
-            SetProperty("Role", FnGetAtt("Module::Role", "Arn"));
+            SetProperty("Role", Fn.GetAtt("Module::Role", "Arn"));
             SetProperty("Environment", new ObjectExpression {
                 ["Variables"] = new ObjectExpression()
             });
             if(!isInlineFunction) {
 
                 // add variable for package name
-                var packageVariable = AddDeclaration(node, new VariableDeclaration(Literal("PackageName")) {
-                    Value = Literal($"{node.LogicalId}-DRYRUN.zip")
+                var packageVariable = AddDeclaration(node, new VariableDeclaration(Fn.Literal("PackageName")) {
+                    Value = Fn.Literal($"{node.LogicalId}-DRYRUN.zip")
                 });
                 SetProperty("Code", new ObjectExpression {
                     ["S3Key"] = GetModuleArtifactExpression($"${{{packageVariable.FullName}}}"),
-                    ["S3Bucket"] = FnRef("DeploymentBucketName")
+                    ["S3Bucket"] = Fn.Ref("DeploymentBucketName")
                 });
             }
             SetProperty("TracingConfig", new ObjectExpression {
-                ["Mode"] = FnIf("XRayIsEnabled", Literal("Active"), Literal("PassThrough"))
+                ["Mode"] = Fn.If("XRayIsEnabled", Fn.Literal("Active"), Fn.Literal("PassThrough"))
             });
 
             // create function log-group with retention window
-            AddDeclaration(node, new ResourceDeclaration(Literal("LogGroup")) {
-                Type = Literal("AWS::Logs::LogGroup"),
+            AddDeclaration(node, new ResourceDeclaration(Fn.Literal("LogGroup")) {
+                Type = Fn.Literal("AWS::Logs::LogGroup"),
                 Properties = new ObjectExpression {
-                    ["LogGroupName"] = FnSub($"/aws/lambda/${{{node.FullName}}}"),
+                    ["LogGroupName"] = Fn.Sub($"/aws/lambda/${{{node.FullName}}}"),
 
                     // TODO (2019-10-25, bjorg): allow 'LogRetentionInDays' attribute on 'Function' declaration
-                    ["RetentionInDays"] = FnRef("Module::LogRetentionInDays")
+                    ["RetentionInDays"] = Fn.Ref("Module::LogRetentionInDays")
                 },
 
                 // TODO: we should clone this
@@ -206,19 +206,19 @@ namespace LambdaSharp.Tool.Compiler.Analyzers {
             if(isFinalizer) {
 
                 // finalizer doesn't need a dead-letter queue or registration b/c it gets deleted anyway on failure or teardown
-                node.Pragmas.Add(Literal("no-function-registration"));
-                node.Pragmas.Add(Literal("no-dead-letter-queue"));
+                node.Pragmas.Add(Fn.Literal("no-function-registration"));
+                node.Pragmas.Add(Fn.Literal("no-dead-letter-queue"));
 
                 // NOTE (2018-12-18, bjorg): always set the 'Finalizer' timeout to the maximum limit to prevent ugly timeout scenarios
-                node.Properties["Timeout"] = Literal(900);
+                node.Properties["Timeout"] = Fn.Literal(900);
 
                 // add finalizer invocation (dependsOn will be set later when all resources have been added)
-                AddDeclaration(node, new ResourceDeclaration(Literal("Invocation")) {
-                    Type = Literal("Module::Finalizer"),
+                AddDeclaration(node, new ResourceDeclaration(Fn.Literal("Invocation")) {
+                    Type = Fn.Literal("Module::Finalizer"),
                     Properties = new ObjectExpression {
-                        ["ServiceToken"] = FnGetAtt(node.FullName, "Arn"),
-                        ["DeploymentChecksum"] = FnRef("DeploymentChecksum"),
-                        ["ModuleVersion"] = Literal(_builder.ModuleVersion.ToString())
+                        ["ServiceToken"] = Fn.GetAtt(node.FullName, "Arn"),
+                        ["DeploymentChecksum"] = Fn.Ref("DeploymentChecksum"),
+                        ["ModuleVersion"] = Fn.Literal(_builder.ModuleVersion.ToString())
                     },
 
                     // TODO: we should clone this
@@ -230,25 +230,25 @@ namespace LambdaSharp.Tool.Compiler.Analyzers {
             if(node.ParentModuleDeclaration.HasModuleRegistration && node.HasFunctionRegistration) {
 
                 // create function registration
-                AddDeclaration(node, new ResourceDeclaration(Literal("Registration")) {
-                    Type = Literal("LambdaSharp::Registration::Function"),
+                AddDeclaration(node, new ResourceDeclaration(Fn.Literal("Registration")) {
+                    Type = Fn.Literal("LambdaSharp::Registration::Function"),
                     Properties = new ObjectExpression {
-                        ["ModuleId"] = FnRef("AWS::StackName"),
-                        ["FunctionId"] = FnRef(node.FullName),
-                        ["FunctionName"] = Literal(node.ItemName.Value),
-                        ["FunctionLogGroupName"] = FnSub($"/aws/lambda/${{{node.FullName}}}"),
-                        ["FunctionPlatform"] = Literal("AWS Lambda"),
+                        ["ModuleId"] = Fn.Ref("AWS::StackName"),
+                        ["FunctionId"] = Fn.Ref(node.FullName),
+                        ["FunctionName"] = Fn.Literal(node.ItemName.Value),
+                        ["FunctionLogGroupName"] = Fn.Sub($"/aws/lambda/${{{node.FullName}}}"),
+                        ["FunctionPlatform"] = Fn.Literal("AWS Lambda"),
                         ["FunctionFramework"] = node.Runtime,
                         ["FunctionLanguage"] = node.Language,
                         ["FunctionMaxMemory"] = node.Memory,
                         ["FunctionMaxDuration"] = node.Timeout
                     },
                     DependsOn = new SyntaxNodeCollection<LiteralExpression> {
-                        Literal("Module::Registration")
+                        Fn.Literal("Module::Registration")
                     },
                     If = (node.If != null)
-                        ? (AExpression)FnAnd(FnCondition("UseCoreServices"), FnCondition(node.IfConditionName))
-                        : FnCondition("UseCoreServices"),
+                        ? (AExpression)Fn.And(Fn.Condition("UseCoreServices"), Fn.Condition(node.IfConditionName))
+                        : Fn.Condition("UseCoreServices"),
                 });
 
                 // create function log-group subscription
@@ -256,17 +256,17 @@ namespace LambdaSharp.Tool.Compiler.Analyzers {
                     _builder.TryGetItemDeclaration("Module::LoggingStream", out _)
                     && _builder.TryGetItemDeclaration("Module::LoggingStreamRole", out _)
                 ) {
-                    AddDeclaration(node, new ResourceDeclaration(Literal("LogGroupSubscription")) {
-                        Type = Literal("AWS::Logs::SubscriptionFilter"),
+                    AddDeclaration(node, new ResourceDeclaration(Fn.Literal("LogGroupSubscription")) {
+                        Type = Fn.Literal("AWS::Logs::SubscriptionFilter"),
                         Properties = new ObjectExpression {
-                            ["DestinationArn"] = FnRef("Module::LoggingStream"),
-                            ["FilterPattern"] = Literal("-\"*** \""),
-                            ["LogGroupName"] = FnRef($"{node.FullName}::LogGroup"),
-                            ["RoleArn"] = FnRef("Module::LoggingStreamRole")
+                            ["DestinationArn"] = Fn.Ref("Module::LoggingStream"),
+                            ["FilterPattern"] = Fn.Literal("-\"*** \""),
+                            ["LogGroupName"] = Fn.Ref($"{node.FullName}::LogGroup"),
+                            ["RoleArn"] = Fn.Ref("Module::LoggingStreamRole")
                         },
                         If = (node.If != null)
-                            ? (AExpression)FnAnd(FnCondition("UseCoreServices"), FnCondition(node.IfConditionName))
-                            : FnCondition("UseCoreServices"),
+                            ? (AExpression)Fn.And(Fn.Condition("UseCoreServices"), Fn.Condition(node.IfConditionName))
+                            : Fn.Condition("UseCoreServices"),
                     });
                 }
             }
@@ -284,7 +284,7 @@ namespace LambdaSharp.Tool.Compiler.Analyzers {
 
                 // set the language
                 if(node.Language == null) {
-                    node.Language = Literal("csharp");
+                    node.Language = Fn.Literal("csharp");
                 }
 
                 // check if the handler/runtime were provided or if they need to be extracted from the project file
@@ -303,7 +303,7 @@ namespace LambdaSharp.Tool.Compiler.Analyzers {
                         _builder.Log(Error.UnsupportedVersionOfDotNetCore, node);
                         break;
                     case "netcoreapp2.1":
-                        node.Runtime = Literal(Amazon.Lambda.Runtime.Dotnetcore21.ToString());
+                        node.Runtime = Fn.Literal(Amazon.Lambda.Runtime.Dotnetcore21.ToString());
                         break;
                     default:
                         _builder.Log(Error.UnknownVersionOfDotNetCore, node);
@@ -315,7 +315,7 @@ namespace LambdaSharp.Tool.Compiler.Analyzers {
                 if(node.Handler == null) {
                     var rootNamespace = mainPropertyGroup?.Element("RootNamespace")?.Value;
                     if(rootNamespace != null) {
-                        node.Handler = Literal($"{projectName}::{rootNamespace}.Function::FunctionHandlerAsync");
+                        node.Handler = Fn.Literal($"{projectName}::{rootNamespace}.Function::FunctionHandlerAsync");
                     } else {
                         _builder.Log(Error.FailedToAutoDetectHandlerInDotNetFunctionProject, node);
                     }
@@ -326,17 +326,17 @@ namespace LambdaSharp.Tool.Compiler.Analyzers {
 
                 // set the language
                 if(node.Language == null) {
-                    node.Language = Literal("javascript");
+                    node.Language = Fn.Literal("javascript");
                 }
 
                 // set runtime
                 if(node.Runtime == null) {
-                    node.Runtime = Literal(Amazon.Lambda.Runtime.Nodejs12X.ToString());
+                    node.Runtime = Fn.Literal(Amazon.Lambda.Runtime.Nodejs12X.ToString());
                 }
 
                 // set handler
                 if(node.Handler == null) {
-                    node.Handler = Literal("index.handler");
+                    node.Handler = Fn.Literal("index.handler");
                 }
             }
 
@@ -344,12 +344,12 @@ namespace LambdaSharp.Tool.Compiler.Analyzers {
 
                 // set the language
                 if(node.Language == null) {
-                    node.Language = Literal("scala");
+                    node.Language = Fn.Literal("scala");
                 }
 
                 // set runtime
                 if(node.Runtime == null) {
-                    node.Runtime = Literal("java8");
+                    node.Runtime = Fn.Literal("java8");
                 }
 
                 // set handler
@@ -425,7 +425,7 @@ namespace LambdaSharp.Tool.Compiler.Analyzers {
             // validate events
             if(node.Events == null) {
                 node.Events = new SyntaxNodeCollection<LiteralExpression> {
-                    Literal("s3:ObjectCreated:*")
+                    Fn.Literal("s3:ObjectCreated:*")
                 };
             } else if(!node.Events.Any()) {
                 _builder.Log(Error.S3EventSourceEventListCannotBeEmpty, node);
@@ -493,7 +493,7 @@ namespace LambdaSharp.Tool.Compiler.Analyzers {
 
             // validate 'BatchSize' for SQS source
             if(node.BatchSize == null) {
-                node.BatchSize = Literal(10);
+                node.BatchSize = Fn.Literal(10);
             } else if(node.BatchSize is LiteralExpression batchSizeLiteral) {
                 if(!int.TryParse(batchSizeLiteral.Value, out var batchSize) || ((batchSize < 1) || (batchSize > 10))) {
                     _builder.Log(Error.SqsEventSourceInvalidBatchSize, node.BatchSize);
@@ -512,7 +512,7 @@ namespace LambdaSharp.Tool.Compiler.Analyzers {
 
             // validate 'BatchSize' for DynamoDB stream source
             if(node.BatchSize == null) {
-                node.BatchSize = Literal(100);
+                node.BatchSize = Fn.Literal(100);
             } else if(node.BatchSize is LiteralExpression batchSizeLiteral) {
                 if(!int.TryParse(batchSizeLiteral.Value, out var batchSize) || ((batchSize < 1) || (batchSize > 1000))) {
                     _builder.Log(Error.DynamoDBEventSourceInvalidBatchSize, node.BatchSize);
@@ -521,7 +521,7 @@ namespace LambdaSharp.Tool.Compiler.Analyzers {
 
             // validate 'StartingPosition' for DynamoDB stream source
             if(node.StartingPosition == null) {
-                node.StartingPosition = Literal("LATEST");
+                node.StartingPosition = Fn.Literal("LATEST");
             } else if(node.StartingPosition is LiteralExpression startingPositionLiteral) {
                 switch(startingPositionLiteral.Value) {
                 case "LATEST":
@@ -548,7 +548,7 @@ namespace LambdaSharp.Tool.Compiler.Analyzers {
 
             // validate 'BatchSize' for Kinesis stream source
             if(node.BatchSize == null) {
-                node.BatchSize = Literal(100);
+                node.BatchSize = Fn.Literal(100);
             } else if(node.BatchSize is LiteralExpression batchSizeLiteral) {
                 if(!int.TryParse(batchSizeLiteral.Value, out var batchSize) || ((batchSize < 1) || (batchSize > 10000))) {
                     _builder.Log(Error.KinesisEventSourceInvalidBatchSize, node.BatchSize);
@@ -557,7 +557,7 @@ namespace LambdaSharp.Tool.Compiler.Analyzers {
 
             // validate 'StartingPosition' for DynamoDB stream source
             if(node.StartingPosition == null) {
-                node.StartingPosition = Literal("LATEST");
+                node.StartingPosition = Fn.Literal("LATEST");
             } else if(node.StartingPosition is LiteralExpression startingPositionLiteral) {
                 switch(startingPositionLiteral.Value) {
                 case "AT_TIMESTAMP":
@@ -623,7 +623,7 @@ namespace LambdaSharp.Tool.Compiler.Analyzers {
 
                 // 'AuthorizationType' must be CUSTOM in this case
                 if(node.AuthorizationType == null) {
-                    node.AuthorizationType = Literal("CUSTOM");
+                    node.AuthorizationType = Fn.Literal("CUSTOM");
                 } else if(node.AuthorizationType.Value != "CUSTOM") {
                     _builder.Log(Error.WebSocketEventSourceInvalidAuthorizationTypeForCustomAuthorizer, node.AuthorizationType);
                 }

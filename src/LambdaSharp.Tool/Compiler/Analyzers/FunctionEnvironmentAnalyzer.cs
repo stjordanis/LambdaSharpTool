@@ -40,13 +40,13 @@ namespace LambdaSharp.Tool.Compiler.Analyzers {
             }
 
             // set default environment variables
-            variables["MODULE_ID"] = FnRef("AWS::StackName");
-            variables["MODULE_INFO"] = Literal(_builder.ModuleInfo.ToString());
-            variables["LAMBDA_NAME"] = Literal(node.FullName);
-            variables["LAMBDA_RUNTIME"] = Literal(node.Runtime.Value);
-            variables["DEPLOYMENTBUCKETNAME"] = FnRef("DeploymentBucketName");
+            variables["MODULE_ID"] = Fn.Ref("AWS::StackName");
+            variables["MODULE_INFO"] = Fn.Literal(_builder.ModuleInfo.ToString());
+            variables["LAMBDA_NAME"] = Fn.Literal(node.FullName);
+            variables["LAMBDA_RUNTIME"] = Fn.Literal(node.Runtime.Value);
+            variables["DEPLOYMENTBUCKETNAME"] = Fn.Ref("DeploymentBucketName");
             if(node.HasDeadLetterQueue && _builder.TryGetItemDeclaration("Module::DeadLetterQueue", out var _))  {
-                variables["DEADLETTERQUEUE"] = FnRef("Module::DeadLetterQueue");
+                variables["DEADLETTERQUEUE"] = Fn.Ref("Module::DeadLetterQueue");
             }
 
             // find all declarations scoped to this function; including wildcards when allowed
@@ -67,7 +67,7 @@ namespace LambdaSharp.Tool.Compiler.Analyzers {
 
                 // check if declaration has a condition associated with it
                 variables[fullEnvName] = ((scopeDeclaration is IConditionalResourceDeclaration conditionalDeclaration) && (conditionalDeclaration.If != null))
-                    ? FnIf(conditionalDeclaration.IfConditionName, scopeDeclaration.ReferenceExpression, FnRef("AWS::NoValue"))
+                    ? Fn.If(conditionalDeclaration.IfConditionName, scopeDeclaration.ReferenceExpression, Fn.Ref("AWS::NoValue"))
                     : scopeDeclaration.ReferenceExpression;
             }
 

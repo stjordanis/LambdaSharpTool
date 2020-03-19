@@ -116,7 +116,7 @@ namespace LambdaSharp.Tool.Compiler.Analyzers {
             _builder.RegisterItemDeclaration(node);
 
             // set declaration expression
-            node.ReferenceExpression = FnRef(node.FullName, resolved: true);
+            node.ReferenceExpression = Fn.Ref(node.FullName, resolved: true);
             return true;
         }
 
@@ -155,7 +155,7 @@ namespace LambdaSharp.Tool.Compiler.Analyzers {
 
             // validate import type
             if(node.Type == null) {
-                node.Type = Literal("String");
+                node.Type = Fn.Literal("String");
             } else if(node.Type?.Value != "Secret") {
 
                 // TODO: validate the import type
@@ -187,24 +187,24 @@ namespace LambdaSharp.Tool.Compiler.Analyzers {
                 } else {
                     _builder.Log(Error.DuplicateName(importParameterName), foundDeclaration);
                 }
-                node.ReferenceExpression = FnRef(foundDeclaration.FullName);
+                node.ReferenceExpression = Fn.Ref(foundDeclaration.FullName);
             } else {
 
                 // add import declaration as a module parameter
-                var importParameterDeclaration = AddDeclaration(node.ParentModuleDeclaration, new ParameterDeclaration(Literal(importParameterName)) {
-                    Type = Literal(node.Type.Value),
-                    Description = Literal($"Cross-module reference for {module}::{export}"),
+                var importParameterDeclaration = AddDeclaration(node.ParentModuleDeclaration, new ParameterDeclaration(Fn.Literal(importParameterName)) {
+                    Type = Fn.Literal(node.Type.Value),
+                    Description = Fn.Literal($"Cross-module reference for {module}::{export}"),
                     EncryptionContext = node.EncryptionContext,
 
                     // set default settings for import parameters
-                    AllowedPattern = Literal("^.+$"),
-                    ConstraintDescription = Literal("must either be a cross-module reference or a non-empty value"),
-                    Section = Literal($"{module} Imports"),
-                    Label = Literal(export),
-                    Import = Literal($"{module}::{export}"),
+                    AllowedPattern = Fn.Literal("^.+$"),
+                    ConstraintDescription = Fn.Literal("must either be a cross-module reference or a non-empty value"),
+                    Section = Fn.Literal($"{module} Imports"),
+                    Label = Fn.Literal(export),
+                    Import = Fn.Literal($"{module}::{export}"),
                     DiscardIfNotReachable = true
                 });
-                node.ReferenceExpression = FnRef(importParameterDeclaration.FullName);
+                node.ReferenceExpression = Fn.Ref(importParameterDeclaration.FullName);
             }
 
             // add optional grants
@@ -237,17 +237,17 @@ namespace LambdaSharp.Tool.Compiler.Analyzers {
             // set declaration expression
             AExpression declarationExpression;
             if(node.EncryptionContext != null) {
-                declarationExpression = FnJoin(
+                declarationExpression = Fn.Join(
                     "|",
                     new AExpression[] {
                         node.Value
                     }.Union(
-                        node.EncryptionContext.Select(kv => Literal($"{kv.Key}={kv.Value}"))
+                        node.EncryptionContext.Select(kv => Fn.Literal($"{kv.Key}={kv.Value}"))
                     ).ToArray()
                 );
             } else {
                 declarationExpression = (node.Value is ListExpression values)
-                    ? FnJoin(",", values)
+                    ? Fn.Join(",", values)
                     : node.Value;
             }
             node.ReferenceExpression = declarationExpression;
@@ -283,7 +283,7 @@ namespace LambdaSharp.Tool.Compiler.Analyzers {
             _builder.RegisterItemDeclaration(node);
 
             // set declaration expression
-            node.ReferenceExpression = FnRef("AWS::NoValue");
+            node.ReferenceExpression = Fn.Ref("AWS::NoValue");
             return true;
         }
 
@@ -293,7 +293,7 @@ namespace LambdaSharp.Tool.Compiler.Analyzers {
             _builder.RegisterItemDeclaration(node);
 
             // set declaration expression
-            node.ReferenceExpression = FnRef(node.FullName, resolved: true);
+            node.ReferenceExpression = Fn.Ref(node.FullName, resolved: true);
 
             // validate attributes
             ValidateAllowAttribute(node, node.Type, node.Allow);
@@ -335,7 +335,7 @@ namespace LambdaSharp.Tool.Compiler.Analyzers {
                     if(node.Type == null) {
 
                         // TODO: what's the best type here?
-                        node.Type = Literal("List");
+                        node.Type = Fn.Literal("List");
                     }
                 } else {
                     ValidateARN(node.Value);
@@ -353,7 +353,7 @@ namespace LambdaSharp.Tool.Compiler.Analyzers {
 
                     // default type to 'String'
                     if(node.Type == null) {
-                        node.Type = Literal("String");
+                        node.Type = Fn.Literal("String");
                     }
                 }
             } else if(node.Type != null) {
@@ -384,7 +384,7 @@ namespace LambdaSharp.Tool.Compiler.Analyzers {
                 if((node.If != null) && !(node.If is ConditionExpression)) {
 
                     // creation condition as sub-declaration
-                    AddDeclaration(node, new ConditionDeclaration(Literal("Condition")) {
+                    AddDeclaration(node, new ConditionDeclaration(Fn.Literal("Condition")) {
                         Value = node.If
                     });
                 }
@@ -426,7 +426,7 @@ namespace LambdaSharp.Tool.Compiler.Analyzers {
             _builder.RegisterItemDeclaration(node);
 
             // set declaration expression
-            node.ReferenceExpression = FnRef("AWS::NoValue");
+            node.ReferenceExpression = Fn.Ref("AWS::NoValue");
 
             // TODO: validate the parameters and output values from the module
             return true;
@@ -459,9 +459,9 @@ namespace LambdaSharp.Tool.Compiler.Analyzers {
             }
 
             // add variable to resolve package location
-            var variable = AddDeclaration(node, new VariableDeclaration(Literal("PackageName")) {
-                Type = Literal("String"),
-                Value = Literal($"{node.LogicalId}-DRYRUN.zip")
+            var variable = AddDeclaration(node, new VariableDeclaration(Fn.Literal("PackageName")) {
+                Type = Fn.Literal("String"),
+                Value = Fn.Literal($"{node.LogicalId}-DRYRUN.zip")
             });
 
             // set declaration expression
@@ -476,7 +476,7 @@ namespace LambdaSharp.Tool.Compiler.Analyzers {
 
             // set declaration expression
             node.ReferenceExpression = new ConditionExpression {
-                ReferenceName = Literal(node.FullName)
+                ReferenceName = Fn.Literal(node.FullName)
             };
             return true;
         }
@@ -487,7 +487,7 @@ namespace LambdaSharp.Tool.Compiler.Analyzers {
             _builder.RegisterItemDeclaration(node);
 
             // set declaration expression
-            node.ReferenceExpression = FnRef("AWS::NoValue");
+            node.ReferenceExpression = Fn.Ref("AWS::NoValue");
 
             // check if object expression is valid (must have first- and second-level keys)
             if(node.Value.Any()) {
@@ -550,7 +550,7 @@ namespace LambdaSharp.Tool.Compiler.Analyzers {
             _builder.RegisterItemDeclaration(node);
 
             // set declaration expression
-            node.ReferenceExpression = FnRef("AWS::NoValue");
+            node.ReferenceExpression = Fn.Ref("AWS::NoValue");
             return true;
         }
 
@@ -560,23 +560,23 @@ namespace LambdaSharp.Tool.Compiler.Analyzers {
             _builder.RegisterItemDeclaration(node);
 
             // set declaration expression
-            node.ReferenceExpression = FnRef("AWS::NoValue");
+            node.ReferenceExpression = Fn.Ref("AWS::NoValue");
 
             // check if a root macros collection needs to be created
             if(!_builder.TryGetItemDeclaration("Macros", out var macrosItem)) {
-                macrosItem = AddDeclaration(node.ParentModuleDeclaration, new GroupDeclaration(Literal("Macros")) {
-                    Description = Literal("Macro definitions")
+                macrosItem = AddDeclaration(node.ParentModuleDeclaration, new GroupDeclaration(Fn.Literal("Macros")) {
+                    Description = Fn.Literal("Macro definitions")
                 });
             }
 
             // add macro resource
             AddDeclaration(macrosItem, new ResourceDeclaration(node.ItemName) {
-                Type = Literal("AWS::CloudFormation::Macro"),
+                Type = Fn.Literal("AWS::CloudFormation::Macro"),
                 Description = node.Description,
                 Properties = new ObjectExpression {
-                    ["Name"] = FnSub($"${{DeploymentPrefix}}{node.ItemName}"),
+                    ["Name"] = Fn.Sub($"${{DeploymentPrefix}}{node.ItemName}"),
                     ["Description"] = node.Description,
-                    ["FunctionName"] = FnRef(node.Handler.Value)
+                    ["FunctionName"] = Fn.Ref(node.Handler.Value)
                 }
             });
             return true;
@@ -643,12 +643,12 @@ namespace LambdaSharp.Tool.Compiler.Analyzers {
                         break;
                     }
                 }
-                var condition = AddDeclaration(node.ParentItemDeclaration, new ConditionDeclaration(Literal(conditionName)) {
+                var condition = AddDeclaration(node.ParentItemDeclaration, new ConditionDeclaration(Fn.Literal(conditionName)) {
                     Value = node.Condition
                 });
                 node.Condition = new ConditionExpression {
                     SourceLocation = node.Condition.SourceLocation,
-                    ReferenceName = Literal(condition.FullName)
+                    ReferenceName = Fn.Literal(condition.FullName)
                 };
             }
             AssertIsConditionExpression(node.Condition);
@@ -780,8 +780,8 @@ namespace LambdaSharp.Tool.Compiler.Analyzers {
                 return true;
             }
             if(moduleDeclaration.HasLambdaSharpDependencies) {
-                condition = FnCondition("UseCoreServices");
-                variable = FnIf("UseCoreServices", FnRef($"LambdaSharp::{name}"), FnRef("AWS::NoValue"));
+                condition = Fn.Condition("UseCoreServices");
+                variable = Fn.If("UseCoreServices", Fn.Ref($"LambdaSharp::{name}"), Fn.Ref("AWS::NoValue"));
                 return true;
             }
             variable = null;
@@ -790,7 +790,7 @@ namespace LambdaSharp.Tool.Compiler.Analyzers {
         }
 
         private static AExpression GetModuleArtifactExpression(string filename)
-            => FnSub($"{ModuleInfo.MODULE_ORIGIN_PLACEHOLDER}/${{Module::Namespace}}/${{Module::Name}}/.artifacts/{filename}");
+            => Fn.Sub($"{ModuleInfo.MODULE_ORIGIN_PLACEHOLDER}/${{Module::Namespace}}/${{Module::Name}}/.artifacts/{filename}");
 
         private void ValidateProperties(string awsType, ObjectExpression properties) {
             if(_builder.CloudformationSpec.ResourceTypes.TryGetValue(awsType, out var resource)) {

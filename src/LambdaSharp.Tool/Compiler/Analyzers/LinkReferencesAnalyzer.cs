@@ -177,15 +177,15 @@ namespace LambdaSharp.Tool.Compiler.Analyzers {
                             // create explicit !Ref expression
                             argExpression = new ReferenceFunctionExpression {
                                 SourceLocation = sourceLocation,
-                                ReferenceName = ASyntaxAnalyzer.Literal(subReferenceName)
+                                ReferenceName = Fn.Literal(subReferenceName)
                             };
                         } else {
 
                             // create explicit !GetAtt expression
                             argExpression = new GetAttFunctionExpression {
                                 SourceLocation = sourceLocation,
-                                ReferenceName = ASyntaxAnalyzer.Literal(subReferenceName),
-                                AttributeName = ASyntaxAnalyzer.Literal(subAttributeName)
+                                ReferenceName = Fn.Literal(subReferenceName),
+                                AttributeName = Fn.Literal(subAttributeName)
                             };
                         }
 

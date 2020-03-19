@@ -121,7 +121,6 @@ namespace LambdaSharp.Tool.Cli.Build {
 
             // TODO:
             //  * generate build artifacts
-            //  * convert declaration to cloudformation resources
 
             // TODO:
             throw new NotImplementedException();

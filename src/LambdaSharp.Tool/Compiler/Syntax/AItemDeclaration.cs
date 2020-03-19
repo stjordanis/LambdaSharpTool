@@ -759,7 +759,7 @@ namespace LambdaSharp.Tool.Compiler.Syntax {
 
         public List<KeyValuePair<string, string>> ResolvedFiles { get; set; } = new List<KeyValuePair<string, string>>();
         public bool HasSecretType => false;
-        public LiteralExpression? Type => ASyntaxAnalyzer.Literal("String");
+        public LiteralExpression? Type => Fn.Literal("String");
 
         //--- Methods ---
         public override ASyntaxNode? VisitNode(ISyntaxVisitor visitor) {
@@ -924,7 +924,7 @@ namespace LambdaSharp.Tool.Compiler.Syntax {
         public bool HasFunctionRegistration => !HasPragma("no-function-registration");
         public bool HasSecretType => false;
         public string? IfConditionName => ((ConditionExpression?)If)?.ReferenceName!.Value;
-        public LiteralExpression? Type => ASyntaxAnalyzer.Literal("AWS::Lambda::Function");
+        public LiteralExpression? Type => Fn.Literal("AWS::Lambda::Function");
 
         //--- Methods ---
         public override ASyntaxNode? VisitNode(ISyntaxVisitor visitor) {

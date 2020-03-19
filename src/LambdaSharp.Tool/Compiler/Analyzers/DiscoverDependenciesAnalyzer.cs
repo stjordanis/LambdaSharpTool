@@ -196,7 +196,7 @@ namespace LambdaSharp.Tool.Compiler.Analyzers {
             if(node.Type == null) {
 
                 // default Type is String when omitted
-                node.Type = Literal("String");
+                node.Type = Fn.Literal("String");
             } else if(!IsValidCloudFormationType(node.Type.Value)) {
                 _builder.Log(Error.ResourceTypePropertyTypeIsInvalid, node.Type);
             }
@@ -213,7 +213,7 @@ namespace LambdaSharp.Tool.Compiler.Analyzers {
             if(node.Type == null) {
 
                 // default Type is String when omitted
-                node.Type = Literal("String");
+                node.Type = Fn.Literal("String");
             } else if(!IsValidCloudFormationType(node.Type.Value)) {
                 _builder.Log(Error.ResourceTypeAttributeTypeIsInvalid, node.Type);
             }

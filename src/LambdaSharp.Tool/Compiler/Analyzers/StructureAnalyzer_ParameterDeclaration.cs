@@ -31,7 +31,7 @@ namespace LambdaSharp.Tool.Compiler.Analyzers {
 
             // register item declaration
             _builder.RegisterItemDeclaration(node);
-            node.ReferenceExpression = FnRef(node.FullName, resolved: true);
+            node.ReferenceExpression = Fn.Ref(node.FullName, resolved: true);
 
             /*
              * VALIDATION
@@ -47,12 +47,12 @@ namespace LambdaSharp.Tool.Compiler.Analyzers {
 
             // default 'Type' attribute value is 'String' when omitted
             if(node.Type == null) {
-                node.Type = Literal("String");
+                node.Type = Fn.Literal("String");
             }
 
             // default 'Section' attribute value is "Module Settings" when omitted
             if(node.Section == null) {
-                node.Section = Literal("Module Settings");
+                node.Section = Fn.Literal("Module Settings");
             }
 
             // the 'Description' attribute cannot exceed 4,000 characters
@@ -193,22 +193,22 @@ namespace LambdaSharp.Tool.Compiler.Analyzers {
                     // TODO: move to Error.cs
                     _builder.Log(new Error(0, "cannot use 'Default' attribute with 'Import'"), node.Import);
                 } else {
-                    node.Default = Literal(importDefaultValue);
+                    node.Default = Fn.Literal(importDefaultValue);
                 }
 
                 // add condition for distinguishing import bindings from literal values
-                var conditionDeclaration = AddDeclaration(node, new ConditionDeclaration(Literal("IsImported")) {
-                    Value = FnAnd(
-                        FnNot(FnEquals(FnRef(node.FullName, resolved: true), Literal(""))),
-                        FnEquals(FnSelect("0", FnSplit("$", FnRef(node.FullName))), Literal(""))
+                var conditionDeclaration = AddDeclaration(node, new ConditionDeclaration(Fn.Literal("IsImported")) {
+                    Value = Fn.And(
+                        Fn.Not(Fn.Equals(Fn.Ref(node.FullName, resolved: true), Fn.Literal(""))),
+                        Fn.Equals(Fn.Select("0", Fn.Split("$", Fn.Ref(node.FullName))), Fn.Literal(""))
                     )
                 });
 
                 // use condition to determine where the imported value should come from
-                node.ReferenceExpression = FnIf(
+                node.ReferenceExpression = Fn.If(
                     conditionDeclaration.FullName,
-                    FnImportValue(FnSub("${DeploymentPrefix}${Import}", new ObjectExpression {
-                        ["Import"] = FnSelect("1", FnSplit("$", node.ReferenceExpression))
+                    Fn.ImportValue(Fn.Sub("${DeploymentPrefix}${Import}", new ObjectExpression {
+                        ["Import"] = Fn.Select("1", Fn.Split("$", node.ReferenceExpression))
                     })),
                     node.ReferenceExpression
                 );
@@ -221,24 +221,24 @@ namespace LambdaSharp.Tool.Compiler.Analyzers {
                 //  resource to decrypt the parameter into a plaintext value.
                 var expression = node.ReferenceExpression;
                 if(node.EncryptionContext != null) {
-                    expression = FnJoin(
+                    expression = Fn.Join(
                         "|",
                         new AExpression[] {
                             node.ReferenceExpression
                         }.Union(
-                            node.EncryptionContext.Select(kv => Literal($"{kv.Key}={kv.Value}"))
+                            node.EncryptionContext.Select(kv => Fn.Literal($"{kv.Key}={kv.Value}"))
                         ).ToArray()
                     );
                 }
-                var decryptResourceDeclaration = AddDeclaration(node, new ResourceDeclaration(Literal("Plaintext")) {
-                    Type = Literal("Module::DecryptSecret"),
+                var decryptResourceDeclaration = AddDeclaration(node, new ResourceDeclaration(Fn.Literal("Plaintext")) {
+                    Type = Fn.Literal("Module::DecryptSecret"),
                     Properties = new ObjectExpression {
-                        ["ServiceToken"] = FnGetAtt("Module::DecryptSecretFunction", "Arn"),
+                        ["ServiceToken"] = Fn.GetAtt("Module::DecryptSecretFunction", "Arn"),
                         ["Ciphertext"] = expression
                     },
                     DiscardIfNotReachable = true
                 });
-                node.ReferenceExpression = FnGetAtt(decryptResourceDeclaration.FullName, "Plaintext");
+                node.ReferenceExpression = Fn.GetAtt(decryptResourceDeclaration.FullName, "Plaintext");
             } else if(IsValidCloudFormationParameterType(node.Type.Value)) {
 
                 // nothing to do
@@ -248,27 +248,27 @@ namespace LambdaSharp.Tool.Compiler.Analyzers {
                 if(node.Properties != null) {
 
                     // add condition for creating the source
-                    var conditionDeclaration = AddDeclaration(node, new ConditionDeclaration(Literal("IsBlank")) {
-                        Value = FnEquals(FnRef(node.FullName, resolved: true), Literal(""))
+                    var conditionDeclaration = AddDeclaration(node, new ConditionDeclaration(Fn.Literal("IsBlank")) {
+                        Value = Fn.Equals(Fn.Ref(node.FullName, resolved: true), Fn.Literal(""))
                     });
 
                     // add conditional resource
-                    var resourceDeclaration = AddDeclaration(node, new ResourceDeclaration(Literal("Resource")) {
-                        Type = Literal(node.Type.Value),
+                    var resourceDeclaration = AddDeclaration(node, new ResourceDeclaration(Fn.Literal("Resource")) {
+                        Type = Fn.Literal(node.Type.Value),
 
                         // TODO: should the data-structure be cloned?
                         Properties = node.Properties,
 
                         // TODO: set 'arnAttribute' for resource (default attribute to return when referencing the resource),
 
-                        If = FnCondition(conditionDeclaration.FullName),
+                        If = Fn.Condition(conditionDeclaration.FullName),
 
                         // TODO: should the data-structure be cloned?
                         Pragmas = node.Pragmas
                     });
 
                     // update the reference expression for the parameter
-                    node.ReferenceExpression = FnIf(conditionDeclaration.FullName, _builder.GetExportReference(resourceDeclaration), node.ReferenceExpression);
+                    node.ReferenceExpression = Fn.If(conditionDeclaration.FullName, _builder.GetExportReference(resourceDeclaration), node.ReferenceExpression);
                 }
                 if(node.Allow != null) {
 

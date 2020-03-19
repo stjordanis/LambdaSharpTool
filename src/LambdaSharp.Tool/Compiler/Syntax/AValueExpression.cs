@@ -59,8 +59,8 @@ namespace LambdaSharp.Tool.Compiler.Syntax {
 
         //--- Operators ---
         public AExpression this[string key] {
-            get => this[ASyntaxAnalyzer.Literal(key)];
-            set => this[ASyntaxAnalyzer.Literal(key)] = value;
+            get => this[Fn.Literal(key)];
+            set => this[Fn.Literal(key)] = value;
         }
 
         public AExpression this[LiteralExpression key] {

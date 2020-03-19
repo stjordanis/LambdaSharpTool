@@ -46,7 +46,7 @@ namespace LambdaSharp.Tool.Compiler.Analyzers {
                 // finalizer invocation depends on all non-conditional resources
                 finalizerInvocationResourceDeclaration.DependsOn = allResourceDeclaration
                     .Where(declaration => (declaration is IConditionalResourceDeclaration conditionalResourceDeclaration) && (conditionalResourceDeclaration.If == null))
-                    .Select(declaration => ASyntaxAnalyzer.Literal(declaration.FullName))
+                    .Select(declaration => Fn.Literal(declaration.FullName))
                     .OrderBy(fullName => fullName.Value)
                     .ToSyntaxNodes();
 
@@ -56,10 +56,10 @@ namespace LambdaSharp.Tool.Compiler.Analyzers {
                     allResourceDeclaration
                         .OfType<IConditionalResourceDeclaration>()
                         .Where(conditionalResourceDeclaration => conditionalResourceDeclaration.If != null)
-                        .Select(conditionalResourceDeclaration => ASyntaxAnalyzer.FnIf(
+                        .Select(conditionalResourceDeclaration => Fn.If(
                             conditionalResourceDeclaration.IfConditionName,
                             _builder.GetExportReference(conditionalResourceDeclaration),
-                            ASyntaxAnalyzer.FnRef("AWS::NoValue"))
+                            Fn.Ref("AWS::NoValue"))
                         )
                 ) {
                     SourceLocation = finalizerInvocationResourceDeclaration.SourceLocation

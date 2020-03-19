@@ -64,7 +64,7 @@ namespace LambdaSharp.Tool.Compiler.CloudFormation {
                         Description = declaration.Description?.Value,
                         Value = Translate(scopedDeclaration.ReferenceExpression ?? throw new NullValueException()),
                         Export = new Dictionary<string, ACloudFormationExpression> {
-                            ["Name"] = Translate(ASyntaxAnalyzer.FnSub($"${{AWS::StackName}}::{declaration.FullName}"))
+                            ["Name"] = Translate(Fn.Sub($"${{AWS::StackName}}::{declaration.FullName}"))
                         }
                     });
                 }
