@@ -26,7 +26,7 @@ using LambdaSharp.Tool.Compiler.Syntax;
 namespace LambdaSharp.Tool.Compiler.Analyzers {
 
     // TODO: rename class; this class is about iterating through declarations and resolving any dependencies
-    public class ResolveReferences {
+    internal class ResolveReferences {
 
         //--- Types ---
         private class Analyzer : ASyntaxAnalyzer {

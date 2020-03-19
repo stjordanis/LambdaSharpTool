@@ -31,7 +31,7 @@ namespace LambdaSharp.Tool.Cli.Deploy {
     using CloudFormationStack = Amazon.CloudFormation.Model.Stack;
     using CloudFormationParameter = Amazon.CloudFormation.Model.Parameter;
 
-    public class ModelUpdater : AModelProcessor {
+    internal class ModelUpdater : AModelProcessor {
 
         //--- Class Fields ---
         private static HashSet<string> _protectedResourceTypes = new HashSet<string> {

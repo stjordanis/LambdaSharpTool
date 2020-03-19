@@ -24,7 +24,7 @@ using LambdaSharp.Tool.Model;
 
 namespace LambdaSharp.Tool.Compiler.Analyzers {
 
-    public class DiscoverDependenciesAnalyzer : ASyntaxAnalyzer {
+    internal class DiscoverDependenciesAnalyzer : ASyntaxAnalyzer {
 
         //--- Class Fields ---
         private static readonly HashSet<string> _reservedResourceTypePrefixes = new HashSet<string> {

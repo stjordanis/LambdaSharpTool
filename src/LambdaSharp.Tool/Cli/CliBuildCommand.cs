@@ -30,7 +30,7 @@ using LambdaSharp.Tool.Cli.Publish;
 
 namespace LambdaSharp.Tool.Cli {
 
-    public class CliBuildPublishDeployCommand : ACliCommand {
+    internal class CliBuildPublishDeployCommand : ACliCommand {
 
         //--- Class Methods ---
         public static CommandOption AddSkipAssemblyValidationOption(CommandLineApplication cmd)

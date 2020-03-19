@@ -19,5 +19,5 @@
 
 namespace LambdaSharp.Tool.Model.AST {
 
-    public class FunctionSourceNode { }
+    internal class FunctionSourceNode { }
 }

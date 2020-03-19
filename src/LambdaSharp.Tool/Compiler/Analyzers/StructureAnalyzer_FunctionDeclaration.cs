@@ -27,7 +27,7 @@ using LambdaSharp.Tool.Compiler.Syntax;
 
 namespace LambdaSharp.Tool.Compiler.Analyzers {
 
-    public partial class StructureAnalyzer {
+    internal partial class StructureAnalyzer {
 
         //--- Class Fields ---
 

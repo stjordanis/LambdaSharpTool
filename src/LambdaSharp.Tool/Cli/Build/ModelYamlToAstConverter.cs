@@ -31,7 +31,7 @@ using YamlDotNet.Serialization.NamingConventions;
 
 namespace LambdaSharp.Tool.Cli.Build {
 
-    public class ModelYamlToAstConverter : AModelProcessor {
+    internal class ModelYamlToAstConverter : AModelProcessor {
 
         //--- Fields ---
         private string _selector;

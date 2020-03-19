@@ -21,13 +21,13 @@ using System.Collections.Generic;
 
 namespace LambdaSharp.Tool.Compiler {
 
-    public interface ILogger {
+    internal interface ILogger {
 
         //--- Methods ---
         void Log(IBuildReportEntry entry, SourceLocation? sourceLocation, bool exact);
     }
 
-    public static class ILoggerEx {
+    internal static class ILoggerEx {
 
         //--- Methods ---
         public static void Log(this ILogger logger, IBuildReportEntry entry) => logger.Log(entry, sourceLocation: null, exact: true);
@@ -48,7 +48,7 @@ namespace LambdaSharp.Tool.Compiler {
         Fatal
     }
 
-    public interface IBuildReportEntry {
+    internal interface IBuildReportEntry {
 
         //--- Properties ---
         int Code { get; }
@@ -56,7 +56,7 @@ namespace LambdaSharp.Tool.Compiler {
         BuildReportEntrySeverity Severity { get; }
     }
 
-    public class BuildReportLogger : ILogger {
+    internal class BuildReportLogger : ILogger {
 
         //--- Fields ---
         private readonly List<string> _messages = new List<string>();

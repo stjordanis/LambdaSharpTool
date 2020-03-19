@@ -24,18 +24,18 @@ using System.Linq;
 
 namespace LambdaSharp.Tool.Compiler.Syntax {
 
-    public abstract class AExpression : ASyntaxNode {
+    internal abstract class AExpression : ASyntaxNode {
 
         //--- Methods ---
         public abstract ASyntaxNode CloneNode();
     }
 
-    public abstract class AValueExpression : AExpression { }
+    internal abstract class AValueExpression : AExpression { }
 
-    public class ObjectExpression : AValueExpression, IEnumerable, IEnumerable<ObjectExpression.KeyValuePair> {
+    internal class ObjectExpression : AValueExpression, IEnumerable, IEnumerable<ObjectExpression.KeyValuePair> {
 
         //--- Types ---
-        public class KeyValuePair {
+        internal class KeyValuePair {
 
             //--- Constructors ---
             public KeyValuePair(LiteralExpression key, AExpression value) {
@@ -145,7 +145,7 @@ namespace LambdaSharp.Tool.Compiler.Syntax {
         IEnumerator<KeyValuePair> IEnumerable<KeyValuePair>.GetEnumerator() => _pairs.GetEnumerator();
     }
 
-    public class ListExpression : AValueExpression, IEnumerable, IEnumerable<AExpression> {
+    internal class ListExpression : AValueExpression, IEnumerable, IEnumerable<AExpression> {
 
         //--- Fields ---
         private readonly List<AExpression> _items;
@@ -196,7 +196,7 @@ namespace LambdaSharp.Tool.Compiler.Syntax {
         Null
     }
 
-    public class LiteralExpression : AValueExpression {
+    internal class LiteralExpression : AValueExpression {
 
         //--- Constructors ---
         public LiteralExpression(string value) : this(value, LiteralType.String) { }

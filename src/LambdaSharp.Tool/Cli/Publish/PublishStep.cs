@@ -33,7 +33,7 @@ using Newtonsoft.Json.Linq;
 
 namespace LambdaSharp.Tool.Cli.Publish {
 
-    public class PublishStep : AModelProcessor {
+    internal class PublishStep : AModelProcessor {
 
         //--- Constants ---
         private const string AMAZON_METADATA_ORIGIN = "x-amz-meta-lambdasharp-origin";

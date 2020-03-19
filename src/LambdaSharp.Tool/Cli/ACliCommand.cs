@@ -42,7 +42,7 @@ using Newtonsoft.Json;
 
 namespace LambdaSharp.Tool.Cli {
 
-    public class AwsAccountInfo {
+    internal class AwsAccountInfo {
 
         //--- Properties ---
         public string Region { get; set; }
@@ -50,7 +50,7 @@ namespace LambdaSharp.Tool.Cli {
         public string UserArn { get; set; }
     }
 
-    public class CachedDeploymentTierSettingsInfo {
+    internal class CachedDeploymentTierSettingsInfo {
 
         //--- Properties ---
         public string DeploymentBucketName { get; set; }
@@ -58,7 +58,7 @@ namespace LambdaSharp.Tool.Cli {
         public CoreServices CoreServices { get; set; }
     }
 
-    public abstract class ACliCommand : CliBase {
+    internal abstract class ACliCommand : CliBase {
 
         //--- Class Properties ---
         public static string CredentialsFilePath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile), ".aws", "credentials");

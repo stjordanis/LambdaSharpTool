@@ -27,7 +27,7 @@ using Newtonsoft.Json;
 namespace LambdaSharp.Tool {
 
     [JsonConverter(typeof(VersionInfoConverter))]
-    public class VersionInfo {
+    internal class VersionInfo {
 
         //--- Class Methods ---
         public static VersionInfo Parse(string text) {
@@ -294,7 +294,7 @@ namespace LambdaSharp.Tool {
             => GetCoreServicesReferenceVersion().IsEqualToVersion(info?.GetCoreServicesReferenceVersion());
     }
 
-    public class VersionInfoConverter : JsonConverter {
+    internal class VersionInfoConverter : JsonConverter {
 
         //--- Methods ---
         public override bool CanConvert(Type objectType)

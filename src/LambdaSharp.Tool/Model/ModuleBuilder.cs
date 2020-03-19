@@ -30,7 +30,7 @@ using LambdaSharp.Tool.Internal;
 namespace LambdaSharp.Tool.Model {
     using static ModelFunctions;
 
-    public class ModuleBuilderDependency {
+    internal class ModuleBuilderDependency {
 
         //--- Properties ---
         public ModuleManifest Manifest { get; set; }
@@ -38,7 +38,7 @@ namespace LambdaSharp.Tool.Model {
         public ModuleManifestDependencyType Type;
     }
 
-    public class ModuleBuilder : AModelProcessor {
+    internal class ModuleBuilder : AModelProcessor {
 
         //--- Fields ---
         private string _namespace;

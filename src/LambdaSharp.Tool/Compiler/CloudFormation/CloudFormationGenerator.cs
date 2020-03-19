@@ -24,7 +24,7 @@ using Microsoft.CSharp.RuntimeBinder;
 
 namespace LambdaSharp.Tool.Compiler.CloudFormation {
 
-    public class CloudFormationGenerator {
+    internal class CloudFormationGenerator {
 
         //--- Class Methods ---
         public static CloudFormationTemplate Translate(ModuleDeclaration module, Builder builder)

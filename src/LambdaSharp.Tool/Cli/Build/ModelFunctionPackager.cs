@@ -36,7 +36,7 @@ using System.Text.RegularExpressions;
 
 namespace LambdaSharp.Tool.Cli.Build {
 
-    public class ModelFunctionPackager : AModelProcessor {
+    internal class ModelFunctionPackager : AModelProcessor {
 
         //--- Constants ---
         private const string GIT_INFO_FILE = "git-info.json";

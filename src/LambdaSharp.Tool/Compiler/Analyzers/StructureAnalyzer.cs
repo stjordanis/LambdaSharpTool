@@ -29,7 +29,7 @@ using LambdaSharp.Tool.Model;
 
 namespace LambdaSharp.Tool.Compiler.Analyzers {
 
-    public partial class StructureAnalyzer : ASyntaxAnalyzer {
+    internal partial class StructureAnalyzer : ASyntaxAnalyzer {
 
         //--- Class Fields ---
         private static readonly HashSet<string> _cloudFormationParameterTypes;

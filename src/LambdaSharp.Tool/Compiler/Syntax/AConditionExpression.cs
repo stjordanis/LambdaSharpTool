@@ -20,9 +20,9 @@ using System;
 
 namespace LambdaSharp.Tool.Compiler.Syntax {
 
-    public abstract class AConditionExpression : AExpression { }
+    internal abstract class AConditionExpression : AExpression { }
 
-    public class ConditionExpression : AConditionExpression {
+    internal class ConditionExpression : AConditionExpression {
 
         // !Condition STRING
 
@@ -64,7 +64,7 @@ namespace LambdaSharp.Tool.Compiler.Syntax {
         };
     }
 
-    public class EqualsConditionExpression : AConditionExpression {
+    internal class EqualsConditionExpression : AConditionExpression {
 
         // !Equals [ EXPR, EXPR ]
         // NOTE: You can use the following functions in a Fn::Equals function:
@@ -104,7 +104,7 @@ namespace LambdaSharp.Tool.Compiler.Syntax {
         };
     }
 
-    public class NotConditionExpression : AConditionExpression {
+    internal class NotConditionExpression : AConditionExpression {
 
         // parse !Not [ EXPR ]
         // NOTE: You can use the following functions in a Fn::Not function:
@@ -136,7 +136,7 @@ namespace LambdaSharp.Tool.Compiler.Syntax {
         };
     }
 
-    public class AndConditionExpression : AConditionExpression {
+    internal class AndConditionExpression : AConditionExpression {
 
         // !And [ EXPR, EXPR ]
         // NOTE: You can use the following functions in a Fn::And function:
@@ -176,7 +176,7 @@ namespace LambdaSharp.Tool.Compiler.Syntax {
         };
     }
 
-    public class OrConditionExpression : AConditionExpression {
+    internal class OrConditionExpression : AConditionExpression {
 
         // !Or [ EXPR, EXPR ]
         // NOTE: You can use the following functions in a Fn::Or function:

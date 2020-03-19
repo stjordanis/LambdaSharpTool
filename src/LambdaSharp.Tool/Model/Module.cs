@@ -24,7 +24,7 @@ using System.Linq;
 
 namespace LambdaSharp.Tool.Model {
 
-    public class Module {
+    internal class Module {
 
         //--- Properties ---
         public string Namespace { get; set; }

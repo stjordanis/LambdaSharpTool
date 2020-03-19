@@ -23,7 +23,7 @@ using LambdaSharp.Tool.Compiler.Syntax;
 
 namespace LambdaSharp.Tool.Compiler {
 
-    public abstract class ASyntaxAnalyzer : ISyntaxVisitor {
+    internal abstract class ASyntaxAnalyzer : ISyntaxVisitor {
 
         //--- Class Methods ---
 

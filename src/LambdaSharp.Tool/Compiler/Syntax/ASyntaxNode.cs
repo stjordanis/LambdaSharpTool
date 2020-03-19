@@ -24,7 +24,7 @@ using System.Linq;
 
 namespace LambdaSharp.Tool.Compiler.Syntax {
 
-    public abstract class ASyntaxNode {
+    internal abstract class ASyntaxNode {
 
         //--- Class Methods ---
         [return: NotNullIfNotNull("node")]
@@ -103,7 +103,7 @@ namespace LambdaSharp.Tool.Compiler.Syntax {
         }
     }
 
-    public static class ASyntaxNodeEx {
+    internal static class ASyntaxNodeEx {
 
         //--- Extension Methods ---
         public static T? Visit<T>(this T node, ISyntaxVisitor visitor) where T : ASyntaxNode {
@@ -122,7 +122,7 @@ namespace LambdaSharp.Tool.Compiler.Syntax {
         }
     }
 
-    public sealed class SyntaxNodeCollection<T> : IEnumerable, IEnumerable<T> where T : ASyntaxNode {
+    internal sealed class SyntaxNodeCollection<T> : IEnumerable, IEnumerable<T> where T : ASyntaxNode {
 
         //--- Fields ---
         private ASyntaxNode? _parent;
@@ -185,7 +185,7 @@ namespace LambdaSharp.Tool.Compiler.Syntax {
         IEnumerator<T> IEnumerable<T>.GetEnumerator() => _nodes.GetEnumerator();
     }
 
-    public static class SyntaxNodeCollectionEx {
+    internal static class SyntaxNodeCollectionEx {
 
         //--- Extension Methods ---
         public static SyntaxNodeCollection<T> ToSyntaxNodes<T>(this IEnumerable<T> enumerable) where T : ASyntaxNode

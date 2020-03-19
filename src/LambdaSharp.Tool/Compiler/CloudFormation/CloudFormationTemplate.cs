@@ -26,7 +26,7 @@ using Newtonsoft.Json.Converters;
 
 namespace LambdaSharp.Tool.Compiler.CloudFormation {
 
-    public class CloudFormationTemplate {
+    internal class CloudFormationTemplate {
 
         //--- Properties ---
         public string AWSTemplateFormatVersion => "2010-09-09";
@@ -40,7 +40,7 @@ namespace LambdaSharp.Tool.Compiler.CloudFormation {
         public Dictionary<string, ACloudFormationExpression> Metadata { get; set; } = new Dictionary<string, ACloudFormationExpression>();
     }
 
-    public class CloudFormationParameter {
+    internal class CloudFormationParameter {
 
         //--- Properties ---
         public string? Type { get; set; }
@@ -56,7 +56,7 @@ namespace LambdaSharp.Tool.Compiler.CloudFormation {
         public bool? NoEcho { get; set; }
     }
 
-    public class CloudFormationResource {
+    internal class CloudFormationResource {
 
         //--- Properties ---
         public string? Type { get; set; }
@@ -67,7 +67,7 @@ namespace LambdaSharp.Tool.Compiler.CloudFormation {
         public string? DeletionPolicy { get; set; }
     }
 
-    public class CloudFormationOutput {
+    internal class CloudFormationOutput {
 
         //--- Properties ---
         public ACloudFormationExpression? Value { get; set; }
@@ -76,12 +76,12 @@ namespace LambdaSharp.Tool.Compiler.CloudFormation {
         public string? Condition { get; set; }
     }
 
-    public class ACloudFormationExpression { }
+    internal class ACloudFormationExpression { }
 
-    public class CloudFormationObjectExpression : ACloudFormationExpression, IEnumerable, IEnumerable<CloudFormationObjectExpression.KeyValuePair> {
+    internal class CloudFormationObjectExpression : ACloudFormationExpression, IEnumerable, IEnumerable<CloudFormationObjectExpression.KeyValuePair> {
 
         //--- Types ---
-        public class KeyValuePair {
+        internal class KeyValuePair {
 
             //--- Constructors ---
             public KeyValuePair(string key, ACloudFormationExpression value) {
@@ -150,7 +150,7 @@ namespace LambdaSharp.Tool.Compiler.CloudFormation {
         IEnumerator<KeyValuePair> IEnumerable<KeyValuePair>.GetEnumerator() => _pairs.GetEnumerator();
     }
 
-    public class CloudFormationListExpression : ACloudFormationExpression, IEnumerable, IEnumerable<ACloudFormationExpression> {
+    internal class CloudFormationListExpression : ACloudFormationExpression, IEnumerable, IEnumerable<ACloudFormationExpression> {
 
         //--- Fields ---
         private readonly List<ACloudFormationExpression> _items;
@@ -180,7 +180,7 @@ namespace LambdaSharp.Tool.Compiler.CloudFormation {
         IEnumerator<ACloudFormationExpression> IEnumerable<ACloudFormationExpression>.GetEnumerator() => _items.GetEnumerator();
     }
 
-    public class CloudFormationLiteralExpression : ACloudFormationExpression {
+    internal class CloudFormationLiteralExpression : ACloudFormationExpression {
 
         //--- Constructors ---
         public CloudFormationLiteralExpression(string value) => Value = value ?? throw new ArgumentNullException(nameof(value));
@@ -190,7 +190,7 @@ namespace LambdaSharp.Tool.Compiler.CloudFormation {
         public string Value { get; }
     }
 
-    public class CloudFormationModuleNameMappings {
+    internal class CloudFormationModuleNameMappings {
 
         //--- Constants ---
         public const string CurrentVersion = "2019-07-04";
@@ -202,7 +202,7 @@ namespace LambdaSharp.Tool.Compiler.CloudFormation {
         public IDictionary<string, string> TypeNameMappings { get; set; } = new Dictionary<string, string>();
     }
 
-    public class CloudFormationModuleManifest : ACloudFormationExpression {
+    internal class CloudFormationModuleManifest : ACloudFormationExpression {
 
         //--- Constants ---
         public const string CurrentVersion = "2019-07-04";
@@ -243,14 +243,14 @@ namespace LambdaSharp.Tool.Compiler.CloudFormation {
             => ParameterSections.SelectMany(section => section.Parameters);
     }
 
-    public class CloudFormationModuleManifestGitInfo {
+    internal class CloudFormationModuleManifestGitInfo {
 
         //--- Properties ---
         public string? Branch { get; set; }
         public string? SHA { get; set; }
     }
 
-    public class CloudFormationModuleManifestResourceType {
+    internal class CloudFormationModuleManifestResourceType {
 
        //--- Properties ---
        public string? Type { get; set; }
@@ -259,7 +259,7 @@ namespace LambdaSharp.Tool.Compiler.CloudFormation {
        public IEnumerable<CloudFormationModuleManifestResourceAttribute> Attributes { get; set; } = new List<CloudFormationModuleManifestResourceAttribute>();
     }
 
-    public class CloudFormationModuleManifestResourceProperty {
+    internal class CloudFormationModuleManifestResourceProperty {
 
        //--- Properties ---
        public string? Name { get; set; }
@@ -268,7 +268,7 @@ namespace LambdaSharp.Tool.Compiler.CloudFormation {
        public bool Required { get; set; } = true;
     }
 
-    public class CloudFormationModuleManifestResourceAttribute {
+    internal class CloudFormationModuleManifestResourceAttribute {
 
        //--- Properties ---
        public string? Name { get; set; }
@@ -276,7 +276,7 @@ namespace LambdaSharp.Tool.Compiler.CloudFormation {
        public string Type { get; set; } = "String";
     }
 
-    public class CloudFormationModuleManifestOutput {
+    internal class CloudFormationModuleManifestOutput {
 
         //--- Properties ---
         public string? Name { get; set; }
@@ -284,7 +284,7 @@ namespace LambdaSharp.Tool.Compiler.CloudFormation {
         public string? Type { get; set; }
     }
 
-    public class CloudFormationModuleManifestMacro {
+    internal class CloudFormationModuleManifestMacro {
 
         //--- Properties ---
         public string? Name { get; set; }
@@ -298,7 +298,7 @@ namespace LambdaSharp.Tool.Compiler.CloudFormation {
         Shared
     }
 
-    public class CloudFormationModuleManifestDependency {
+    internal class CloudFormationModuleManifestDependency {
 
         //--- Constructors ---
         public CloudFormationModuleManifestDependency(ModuleInfo moduleInfo, CloudFormationModuleManifestDependencyType type) {
@@ -311,14 +311,14 @@ namespace LambdaSharp.Tool.Compiler.CloudFormation {
         public CloudFormationModuleManifestDependencyType Type { get; }
     }
 
-    public class CloudFormationModuleManifestParameterSection {
+    internal class CloudFormationModuleManifestParameterSection {
 
         //--- Properties ---
         public string? Title { get; set; }
         public List<CloudFormationModuleManifestParameter> Parameters { get; set; } = new List<CloudFormationModuleManifestParameter>();
     }
 
-    public class CloudFormationModuleManifestParameter {
+    internal class CloudFormationModuleManifestParameter {
 
         //--- Properties ---
         public string? Name { get; set; }

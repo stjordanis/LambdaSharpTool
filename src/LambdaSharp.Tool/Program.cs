@@ -46,7 +46,7 @@ namespace LambdaSharp.Tool {
         AllModules
     }
 
-    public class Program : CliBase {
+    internal class Program : CliBase {
 
         //--- Class Fields ---
         public static bool Quiet;

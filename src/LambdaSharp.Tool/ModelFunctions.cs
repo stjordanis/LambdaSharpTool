@@ -25,7 +25,7 @@ using System.Text.RegularExpressions;
 
 namespace LambdaSharp.Tool {
 
-    public static class ModelFunctions {
+    internal static class ModelFunctions {
 
         //--- Constants ---
         private const string SUBVARIABLE_PATTERN = @"\$\{(?!\!)[^\}]+\}";

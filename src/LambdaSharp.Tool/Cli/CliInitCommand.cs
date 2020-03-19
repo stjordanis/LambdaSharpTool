@@ -33,7 +33,7 @@ using McMaster.Extensions.CommandLineUtils;
 
 namespace LambdaSharp.Tool.Cli {
 
-    public class CliInitCommand : ACliCommand {
+    internal class CliInitCommand : ACliCommand {
 
         //--- Constants ---
         private const string DEFAULT_API_GATEWAY_ROLE = "LambdaSharp-ApiGatewayRole";

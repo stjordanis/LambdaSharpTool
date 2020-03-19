@@ -20,7 +20,7 @@ using System;
 
 namespace LambdaSharp.Tool.Compiler {
 
-    public class SourceLocation {
+    internal class SourceLocation {
 
         //--- Class Fields ---
         public static readonly SourceLocation Empty = new SourceLocation("", 0, 0, 0, 0);

@@ -21,13 +21,13 @@ using System.Linq;
 
 namespace LambdaSharp.Tool.Compiler.Syntax {
 
-    public abstract class ADeclaration : ASyntaxNode { }
+    internal abstract class ADeclaration : ASyntaxNode { }
 
     [SyntaxDeclarationKeyword("Module")]
-    public class ModuleDeclaration : ADeclaration {
+    internal class ModuleDeclaration : ADeclaration {
 
         //--- Types ---
-        public class CloudFormationSpecExpression : ASyntaxNode {
+        internal class CloudFormationSpecExpression : ASyntaxNode {
 
             //--- Fields ---
             private LiteralExpression? _version;
@@ -144,7 +144,7 @@ namespace LambdaSharp.Tool.Compiler.Syntax {
     }
 
     [SyntaxDeclarationKeyword("Module")]
-    public class UsingModuleDeclaration : ADeclaration {
+    internal class UsingModuleDeclaration : ADeclaration {
 
         //--- Fields ---
         private LiteralExpression? _description;

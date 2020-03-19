@@ -30,7 +30,7 @@ using ICSharpCode.SharpZipLib.Zip;
 
 namespace LambdaSharp.Tool.Cli.Build {
 
-    public class ModelFilesPackager : AModelProcessor {
+    internal class ModelFilesPackager : AModelProcessor {
 
         //--- Constants ---
         private const int READ_AND_WRITE_PERMISSIONS = 0b1_000_000_110_110_110 << 16;

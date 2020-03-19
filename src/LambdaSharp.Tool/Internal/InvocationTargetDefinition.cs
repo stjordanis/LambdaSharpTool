@@ -24,7 +24,7 @@ using Newtonsoft.Json.Linq;
 
 namespace LambdaSharp.Tool.Internal {
 
-    public class InvocationTargetDefinition {
+    internal class InvocationTargetDefinition {
 
         //--- Properties ---
         public string Assembly { get; set; }

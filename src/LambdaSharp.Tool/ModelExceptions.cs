@@ -20,13 +20,13 @@ using System;
 
 namespace LambdaSharp.Tool {
 
-    public class ModelParserException : Exception {
+    internal class ModelParserException : Exception {
 
         //--- Constructors ---
         public ModelParserException(string message) : base(message) { }
     }
 
-    public class ModelLocationException : Exception {
+    internal class ModelLocationException : Exception {
 
         //--- Constructors ---
         public ModelLocationException(string location, string sourceFilename, Exception innerException) : base($"error location near: {location} [{sourceFilename}]", innerException) {}

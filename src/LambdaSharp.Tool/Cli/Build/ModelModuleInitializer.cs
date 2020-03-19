@@ -22,7 +22,7 @@ using LambdaSharp.Tool.Model;
 namespace LambdaSharp.Tool.Cli.Build {
     using static ModelFunctions;
 
-    public class ModelModuleInitializer : AModelProcessor {
+    internal class ModelModuleInitializer : AModelProcessor {
 
         //--- Constructors ---
         public ModelModuleInitializer(Settings settings, string sourceFilename) : base(settings, sourceFilename) { }

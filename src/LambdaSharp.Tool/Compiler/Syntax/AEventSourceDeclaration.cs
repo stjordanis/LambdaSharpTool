@@ -20,10 +20,10 @@ using System;
 
 namespace LambdaSharp.Tool.Compiler.Syntax {
 
-    public abstract class AEventSourceDeclaration : ADeclaration { }
+    internal abstract class AEventSourceDeclaration : ADeclaration { }
 
     [SyntaxDeclarationKeyword("Api")]
-    public class ApiEventSourceDeclaration : AEventSourceDeclaration {
+    internal class ApiEventSourceDeclaration : AEventSourceDeclaration {
 
         //--- Fields ---
         private LiteralExpression? _integration;
@@ -111,7 +111,7 @@ namespace LambdaSharp.Tool.Compiler.Syntax {
     }
 
     [SyntaxDeclarationKeyword("Schedule", typeof(AExpression))]
-    public class SchedulEventSourceDeclaration : AEventSourceDeclaration {
+    internal class SchedulEventSourceDeclaration : AEventSourceDeclaration {
 
         //--- Fields ---
         private LiteralExpression? _name;
@@ -141,7 +141,7 @@ namespace LambdaSharp.Tool.Compiler.Syntax {
     }
 
     [SyntaxDeclarationKeyword("S3", typeof(AExpression))]
-    public class S3EventSourceDeclaration : AEventSourceDeclaration {
+    internal class S3EventSourceDeclaration : AEventSourceDeclaration {
 
         //--- Fields ---
         private SyntaxNodeCollection<LiteralExpression>? _events;
@@ -187,7 +187,7 @@ namespace LambdaSharp.Tool.Compiler.Syntax {
     }
 
     [SyntaxDeclarationKeyword("SlackCommand")]
-    public class SlackCommandEventSourceDeclaration : AEventSourceDeclaration {
+    internal class SlackCommandEventSourceDeclaration : AEventSourceDeclaration {
 
         //--- Constructors ---
         public SlackCommandEventSourceDeclaration(LiteralExpression eventSource) => EventSource = SetParent(eventSource) ?? throw new ArgumentNullException(nameof(eventSource));
@@ -207,7 +207,7 @@ namespace LambdaSharp.Tool.Compiler.Syntax {
     }
 
     [SyntaxDeclarationKeyword("Topic", typeof(AExpression))]
-    public class TopicEventSourceDeclaration : AEventSourceDeclaration {
+    internal class TopicEventSourceDeclaration : AEventSourceDeclaration {
 
         //--- Fields ---
         private ObjectExpression? _filters;
@@ -237,7 +237,7 @@ namespace LambdaSharp.Tool.Compiler.Syntax {
     }
 
     [SyntaxDeclarationKeyword("Sqs", typeof(AExpression))]
-    public class SqsEventSourceDeclaration : AEventSourceDeclaration {
+    internal class SqsEventSourceDeclaration : AEventSourceDeclaration {
 
         //--- Fields ---
         private AExpression? _batchSize;
@@ -268,7 +268,7 @@ namespace LambdaSharp.Tool.Compiler.Syntax {
     }
 
     [SyntaxDeclarationKeyword("Alexa", typeof(AExpression))]
-    public class AlexaEventSourceDeclaration : AEventSourceDeclaration {
+    internal class AlexaEventSourceDeclaration : AEventSourceDeclaration {
 
         //--- Constructors ---
         public AlexaEventSourceDeclaration(AExpression eventSource) => EventSource = SetParent(eventSource) ?? throw new ArgumentNullException(nameof(eventSource));
@@ -286,7 +286,7 @@ namespace LambdaSharp.Tool.Compiler.Syntax {
     }
 
     [SyntaxDeclarationKeyword("DynamoDB", typeof(AExpression))]
-    public class DynamoDBEventSourceDeclaration : AEventSourceDeclaration {
+    internal class DynamoDBEventSourceDeclaration : AEventSourceDeclaration {
 
         //--- Fields ---
         private AExpression? _batchSize;
@@ -331,7 +331,7 @@ namespace LambdaSharp.Tool.Compiler.Syntax {
     }
 
     [SyntaxDeclarationKeyword("Kinesis", typeof(AExpression))]
-    public class KinesisEventSourceDeclaration : AEventSourceDeclaration {
+    internal class KinesisEventSourceDeclaration : AEventSourceDeclaration {
 
         //--- Fields ---
         private AExpression? _batchSize;
@@ -376,7 +376,7 @@ namespace LambdaSharp.Tool.Compiler.Syntax {
     }
 
     [SyntaxDeclarationKeyword("WebSocket")]
-    public class WebSocketEventSourceDeclaration : AEventSourceDeclaration {
+    internal class WebSocketEventSourceDeclaration : AEventSourceDeclaration {
 
         //--- Fields ---
         private LiteralExpression? _operationName;

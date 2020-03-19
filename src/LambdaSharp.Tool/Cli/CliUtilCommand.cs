@@ -46,7 +46,7 @@ using NJsonSchema.Generation;
 
 namespace LambdaSharp.Tool.Cli {
 
-    public class CliUtilCommand : ACliCommand {
+    internal class CliUtilCommand : ACliCommand {
 
         //--- Types ---
         private class ProcessTargetInvocationException : Exception {

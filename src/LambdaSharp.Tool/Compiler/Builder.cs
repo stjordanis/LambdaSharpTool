@@ -70,7 +70,7 @@ namespace LambdaSharp.Tool.Compiler {
     //  - rename 'Builder' to 'BuildContext'
     //  - test what two "Import" declarations for the same source look like in the generated CloudFormation
 
-    public interface IBuilderDependencyProvider : ILogger {
+    internal interface IBuilderDependencyProvider : ILogger {
 
         //--- Properties ---
         string ToolDataDirectory { get; }
@@ -81,7 +81,7 @@ namespace LambdaSharp.Tool.Compiler {
         Task<CloudFormationSpec> ReadCloudFormationSpecAsync(RegionEndpoint region, VersionInfo version);
     }
 
-    public static class ILoggerSyntaxNodeEx {
+    internal static class ILoggerSyntaxNodeEx {
 
         //--- Extension Methods ---
         public static void Log(this ILogger logger, IBuildReportEntry entry, ASyntaxNode node) {
@@ -106,7 +106,7 @@ namespace LambdaSharp.Tool.Compiler {
         AllModules
     }
 
-    public class Grant {
+    internal class Grant {
 
         //--- Constructors ---
         public Grant(string name, string awsType, AExpression reference, SyntaxNodeCollection<LiteralExpression> allow, AExpression condition) {
@@ -125,7 +125,7 @@ namespace LambdaSharp.Tool.Compiler {
         public AExpression Condition { get; }
     }
 
-    public class Dependency {
+    internal class Dependency {
 
         //--- Properties ---
         public ModuleManifest Manifest { get; set; }
@@ -134,7 +134,7 @@ namespace LambdaSharp.Tool.Compiler {
     }
 
     // TODO: rename class since it's not really used for building the final result; it's more about tracking meta-data of the module
-    public class Builder : ILogger {
+    internal class Builder : ILogger {
 
         //--- Class Fields ---
         private static Regex ValidResourceNameRegex = new Regex("[a-zA-Z][a-zA-Z0-9]*", RegexOptions.Compiled | RegexOptions.CultureInvariant);

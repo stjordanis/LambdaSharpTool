@@ -25,7 +25,7 @@ using LambdaSharp.Tool.Compiler.Syntax;
 
 namespace LambdaSharp.Tool.Compiler.Analyzers {
 
-    public class LinkReferencesAnalyzer : ASyntaxAnalyzer {
+    internal class LinkReferencesAnalyzer : ASyntaxAnalyzer {
 
         //--- Constants ---
         private const string SUBVARIABLE_PATTERN = @"\$\{(?!\!)[^\}]+\}";

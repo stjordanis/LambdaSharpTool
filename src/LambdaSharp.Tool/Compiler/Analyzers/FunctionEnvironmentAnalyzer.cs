@@ -23,7 +23,7 @@ using LambdaSharp.Tool.Compiler.Syntax;
 
 namespace LambdaSharp.Tool.Compiler.Analyzers {
 
-    public class FunctionEnvironmentAnalyzer : ASyntaxAnalyzer {
+    internal class FunctionEnvironmentAnalyzer : ASyntaxAnalyzer {
 
         //--- Fields ---
         private readonly Builder _builder;

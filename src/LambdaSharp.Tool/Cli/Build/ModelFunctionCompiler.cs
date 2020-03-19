@@ -30,7 +30,7 @@ using Newtonsoft.Json.Linq;
 namespace LambdaSharp.Tool.Cli.Build {
     using static ModelFunctions;
 
-    public class ModelFunctionProcessor : AModelProcessor {
+    internal class ModelFunctionProcessor : AModelProcessor {
 
         //--- Class Fields ---
         private static readonly string LambdaRestApiRequestTemplate = typeof(ModelFunctionProcessor).Assembly.ReadManifestResource("Resources/LambdaRestApiRequest.vtl");

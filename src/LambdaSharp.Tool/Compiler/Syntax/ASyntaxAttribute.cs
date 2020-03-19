@@ -21,14 +21,14 @@ using System;
 namespace LambdaSharp.Tool.Compiler.Syntax {
 
     [AttributeUsage(AttributeTargets.Property)]
-    public abstract class ASyntaxAttribute : Attribute { }
+    internal abstract class ASyntaxAttribute : Attribute { }
 
-    public sealed class SyntaxRequiredAttribute : ASyntaxAttribute { }
+    internal sealed class SyntaxRequiredAttribute : ASyntaxAttribute { }
 
-    public sealed class SyntaxOptionalAttribute : ASyntaxAttribute { }
+    internal sealed class SyntaxOptionalAttribute : ASyntaxAttribute { }
 
     [AttributeUsage(AttributeTargets.Class)]
-    public sealed class SyntaxDeclarationKeywordAttribute : Attribute {
+    internal sealed class SyntaxDeclarationKeywordAttribute : Attribute {
 
         //--- Constructors ---
         public SyntaxDeclarationKeywordAttribute(string keyword) => Keyword = keyword ?? throw new ArgumentNullException(nameof(keyword));

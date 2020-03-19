@@ -22,7 +22,7 @@ using System.Linq;
 using LambdaSharp.Tool.Compiler.Syntax;
 
 namespace LambdaSharp.Tool.Compiler.Analyzers {
-    public class FinalizerDependenciesAnalyzer {
+    internal class FinalizerDependenciesAnalyzer {
         //--- Fields ---
         private readonly Builder _builder;
 

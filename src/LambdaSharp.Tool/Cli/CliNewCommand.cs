@@ -49,7 +49,7 @@ namespace LambdaSharp.Tool.Cli {
         Finalizer
     }
 
-    public class CliNewCommand : ACliCommand {
+    internal class CliNewCommand : ACliCommand {
 
         //--- Fields ---
         private IList<string> _functionTypes = typeof(FunctionType).GetEnumNames()

@@ -20,7 +20,7 @@ using LambdaSharp.Tool.Compiler.Syntax;
 
 namespace LambdaSharp.Tool.Compiler {
 
-    public interface ISyntaxVisitor {
+    internal interface ISyntaxVisitor {
 
         //--- Methods ---
         bool VisitStart(ModuleDeclaration node);

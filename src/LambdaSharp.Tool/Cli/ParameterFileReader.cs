@@ -38,10 +38,10 @@ using YamlDotNet.Serialization.ObjectFactories;
 
 namespace LambdaSharp.Tool.Cli {
 
-    public class ParameterFileReader : AModelProcessor {
+    internal class ParameterFileReader : AModelProcessor {
 
         //--- Types ---
-        public class ParameterStoreFunctionNodeDeserializer : INodeDeserializer {
+        internal class ParameterStoreFunctionNodeDeserializer : INodeDeserializer {
 
             //--- Fields ---
             public readonly Dictionary<string, string> Dictionary = new Dictionary<string, string>();

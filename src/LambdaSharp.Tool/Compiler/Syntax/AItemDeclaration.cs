@@ -22,7 +22,7 @@ using System.Linq;
 
 namespace LambdaSharp.Tool.Compiler.Syntax {
 
-    public abstract class AItemDeclaration : ADeclaration {
+    internal abstract class AItemDeclaration : ADeclaration {
 
         //--- Types ---
         public readonly struct ConditionBranch {
@@ -36,7 +36,7 @@ namespace LambdaSharp.Tool.Compiler.Syntax {
             public AExpression Expression { get; }
         }
 
-        public class DependencyRecord {
+        internal class DependencyRecord {
 
             //--- Constructors ---
             public DependencyRecord(AItemDeclaration referencedDeclaration, IEnumerable<ConditionBranch> conditions, AExpression expression) {
@@ -178,7 +178,7 @@ namespace LambdaSharp.Tool.Compiler.Syntax {
     /// The <see cref="IScopedDeclaration"/> interface indicates a resources that
     /// can be scoped to a Lambda function environment.
     /// </summary>
-    public interface IScopedDeclaration {
+    internal interface IScopedDeclaration {
 
         //--- Properties ---
         string FullName { get; }
@@ -195,7 +195,7 @@ namespace LambdaSharp.Tool.Compiler.Syntax {
     /// The <see cref="IResourceDeclaration"/> interface indicates a CloudFormation resource that
     /// is created by the template.
     /// </summary>
-    public interface IResourceDeclaration {
+    internal interface IResourceDeclaration {
 
         //--- Properties ---
         string FullName { get; }
@@ -206,7 +206,7 @@ namespace LambdaSharp.Tool.Compiler.Syntax {
     /// The <see cref="IConditionalResourceDeclaration"/> interface indicates a CloudFormation resource that
     /// can be conditionally created by the template.
     /// </summary>
-    public interface IConditionalResourceDeclaration : IResourceDeclaration {
+    internal interface IConditionalResourceDeclaration : IResourceDeclaration {
 
         //--- Properties ---
         AExpression? If { get; }
@@ -214,7 +214,7 @@ namespace LambdaSharp.Tool.Compiler.Syntax {
     }
 
     [SyntaxDeclarationKeyword("Parameter")]
-    public class ParameterDeclaration : AItemDeclaration, IScopedDeclaration {
+    internal class ParameterDeclaration : AItemDeclaration, IScopedDeclaration {
 
         //--- Fields ---
         private LiteralExpression? _section;
@@ -387,7 +387,7 @@ namespace LambdaSharp.Tool.Compiler.Syntax {
     /// The <see cref="PseudoParameterDeclaration"/> class is used to declare CloudFormation pseudo-parameters.
     /// This declaration type is only used internally and never parsed.
     /// </summary>
-    public class PseudoParameterDeclaration : AItemDeclaration {
+    internal class PseudoParameterDeclaration : AItemDeclaration {
 
         //--- Constructors ---
         public PseudoParameterDeclaration(LiteralExpression itemName) : base(itemName) { }
@@ -402,7 +402,7 @@ namespace LambdaSharp.Tool.Compiler.Syntax {
     }
 
     [SyntaxDeclarationKeyword("Import")]
-    public class ImportDeclaration : AItemDeclaration, IScopedDeclaration {
+    internal class ImportDeclaration : AItemDeclaration, IScopedDeclaration {
 
         //--- Fields ---
         private LiteralExpression? _type;
@@ -467,7 +467,7 @@ namespace LambdaSharp.Tool.Compiler.Syntax {
     }
 
     [SyntaxDeclarationKeyword("Variable")]
-    public class VariableDeclaration : AItemDeclaration, IScopedDeclaration {
+    internal class VariableDeclaration : AItemDeclaration, IScopedDeclaration {
 
         //--- Fields ---
         private LiteralExpression? type;
@@ -524,7 +524,7 @@ namespace LambdaSharp.Tool.Compiler.Syntax {
     }
 
     [SyntaxDeclarationKeyword("Group")]
-    public class GroupDeclaration : AItemDeclaration {
+    internal class GroupDeclaration : AItemDeclaration {
 
         //--- Constructors ---
         public GroupDeclaration(LiteralExpression itemName) : base(itemName) { }
@@ -549,7 +549,7 @@ namespace LambdaSharp.Tool.Compiler.Syntax {
     }
 
     [SyntaxDeclarationKeyword("Condition")]
-    public class ConditionDeclaration : AItemDeclaration {
+    internal class ConditionDeclaration : AItemDeclaration {
 
         //--- Fields ---
         private AExpression? _value;
@@ -578,7 +578,7 @@ namespace LambdaSharp.Tool.Compiler.Syntax {
     }
 
     [SyntaxDeclarationKeyword("Resource")]
-    public class ResourceDeclaration : AItemDeclaration, IScopedDeclaration, IConditionalResourceDeclaration {
+    internal class ResourceDeclaration : AItemDeclaration, IScopedDeclaration, IConditionalResourceDeclaration {
 
         //--- Fields ---
         private AExpression? _if;
@@ -682,7 +682,7 @@ namespace LambdaSharp.Tool.Compiler.Syntax {
     }
 
     [SyntaxDeclarationKeyword("Nested")]
-    public class NestedModuleDeclaration : AItemDeclaration, IResourceDeclaration {
+    internal class NestedModuleDeclaration : AItemDeclaration, IResourceDeclaration {
 
         //--- Fields ---
         private LiteralExpression? _module;
@@ -731,7 +731,7 @@ namespace LambdaSharp.Tool.Compiler.Syntax {
     }
 
     [SyntaxDeclarationKeyword("Package")]
-    public class PackageDeclaration : AItemDeclaration, IScopedDeclaration {
+    internal class PackageDeclaration : AItemDeclaration, IScopedDeclaration {
 
         //--- Fields ---
         private SyntaxNodeCollection<LiteralExpression> _scope;
@@ -775,10 +775,10 @@ namespace LambdaSharp.Tool.Compiler.Syntax {
     }
 
     [SyntaxDeclarationKeyword("Function")]
-    public class FunctionDeclaration : AItemDeclaration, IScopedDeclaration, IConditionalResourceDeclaration {
+    internal class FunctionDeclaration : AItemDeclaration, IScopedDeclaration, IConditionalResourceDeclaration {
 
         //--- Types ---
-        public class VpcExpression : ASyntaxNode {
+        internal class VpcExpression : ASyntaxNode {
 
             //--- Fields ---
             private AExpression? _securityGroupIds;
@@ -951,7 +951,7 @@ namespace LambdaSharp.Tool.Compiler.Syntax {
     }
 
     [SyntaxDeclarationKeyword("Mapping")]
-    public class MappingDeclaration : AItemDeclaration {
+    internal class MappingDeclaration : AItemDeclaration {
 
         //--- Fields ---
         private ObjectExpression? _value;
@@ -980,10 +980,10 @@ namespace LambdaSharp.Tool.Compiler.Syntax {
     }
 
     [SyntaxDeclarationKeyword("ResourceType")]
-    public class ResourceTypeDeclaration : AItemDeclaration {
+    internal class ResourceTypeDeclaration : AItemDeclaration {
 
         //--- Types ---
-        public class PropertyTypeExpression : ASyntaxNode {
+        internal class PropertyTypeExpression : ASyntaxNode {
 
             //--- Fields ---
             private LiteralExpression? _name;
@@ -1029,7 +1029,7 @@ namespace LambdaSharp.Tool.Compiler.Syntax {
             }
         }
 
-        public class AttributeTypeExpression : ASyntaxNode {
+        internal class AttributeTypeExpression : ASyntaxNode {
 
             //--- Fields ---
             private LiteralExpression? _name;
@@ -1113,7 +1113,7 @@ namespace LambdaSharp.Tool.Compiler.Syntax {
     }
 
     [SyntaxDeclarationKeyword("Macro")]
-    public class MacroDeclaration : AItemDeclaration, IResourceDeclaration {
+    internal class MacroDeclaration : AItemDeclaration, IResourceDeclaration {
 
         //--- Fields ---
         private LiteralExpression? _handler;

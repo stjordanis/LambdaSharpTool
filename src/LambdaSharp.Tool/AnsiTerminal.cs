@@ -21,7 +21,7 @@ using System.Runtime.InteropServices;
 
 namespace LambdaSharp.Tool {
 
-    public class AnsiTerminal : IDisposable {
+    internal class AnsiTerminal : IDisposable {
 
         // Great resource about ANSI codes and how to use them:
         // http://www.lihaoyi.com/post/BuildyourownCommandLinewithANSIescapecodes.html

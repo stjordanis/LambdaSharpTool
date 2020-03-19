@@ -35,10 +35,11 @@ using Newtonsoft.Json;
 using Xunit.Abstractions;
 
 namespace Tests.LambdaSharp.Tool.Compiler.Parser {
+
     public abstract class _Init {
 
         //--- Types ---
-        public class ParserDependencyProvider : ILambdaSharpParserDependencyProvider {
+        internal class ParserDependencyProvider : ILambdaSharpParserDependencyProvider {
 
             //--- Fields ---
             private readonly List<string> _messages;
@@ -57,7 +58,7 @@ namespace Tests.LambdaSharp.Tool.Compiler.Parser {
             public string ReadFile(string filePath) => Files[filePath];
         }
 
-        public class BuilderDependencyProvider : IBuilderDependencyProvider {
+        internal class BuilderDependencyProvider : IBuilderDependencyProvider {
 
             //--- Fields ---
             private readonly List<string> _messages;
@@ -130,9 +131,9 @@ namespace Tests.LambdaSharp.Tool.Compiler.Parser {
         }
 
         //--- Fields ---
-        protected readonly ITestOutputHelper Output;
-        protected readonly ParserDependencyProvider Provider;
-        protected readonly List<string> Messages = new List<string>();
+        internal readonly ITestOutputHelper Output;
+        internal readonly ParserDependencyProvider Provider;
+        internal readonly List<string> Messages = new List<string>();
 
         //--- Constructors ---
         public _Init(ITestOutputHelper output) {
@@ -143,7 +144,7 @@ namespace Tests.LambdaSharp.Tool.Compiler.Parser {
         //--- Methods ---
         protected void AddSource(string filePath, string source) => Provider.Files.Add(filePath, source);
 
-        protected LambdaSharpParser NewParser(string source) {
+        internal LambdaSharpParser NewParser(string source) {
             AddSource("test.yml", source);
             return new LambdaSharpParser(Provider, "test.yml");
         }

@@ -25,9 +25,9 @@ using LambdaSharp.Tool.Internal;
 namespace LambdaSharp.Tool.Model {
     using static ModelFunctions;
 
-    public delegate object ModuleVisitorDelegate(AModuleItem item, object value);
+    internal delegate object ModuleVisitorDelegate(AModuleItem item, object value);
 
-    public abstract class AModuleItem {
+    internal abstract class AModuleItem {
 
         //--- Constructors ---
         public AModuleItem(
@@ -77,7 +77,7 @@ namespace LambdaSharp.Tool.Model {
         }
     }
 
-    public class VariableItem : AModuleItem {
+    internal class VariableItem : AModuleItem {
 
         //--- Constructors ---
         public VariableItem(
@@ -90,7 +90,7 @@ namespace LambdaSharp.Tool.Model {
         ) : base(parent, name, description, type, scope, reference) { }
     }
 
-    public class PackageItem : AModuleItem {
+    internal class PackageItem : AModuleItem {
 
         //--- Constructors ---
         public PackageItem(
@@ -107,7 +107,7 @@ namespace LambdaSharp.Tool.Model {
         public IList<KeyValuePair<string, string>> Files { get; }
     }
 
-    public class ParameterItem : AModuleItem {
+    internal class ParameterItem : AModuleItem {
 
         //--- Constructors ---
         public ParameterItem(
@@ -135,7 +135,7 @@ namespace LambdaSharp.Tool.Model {
         public string Import { get; }
     }
 
-    public abstract class AResourceItem : AModuleItem {
+    internal abstract class AResourceItem : AModuleItem {
 
         //--- Constructors ---
         public AResourceItem(
@@ -181,7 +181,7 @@ namespace LambdaSharp.Tool.Model {
         public override bool HasPragma(string pragma) => Pragmas.Contains(pragma);
     }
 
-    public class ResourceItem : AResourceItem {
+    internal class ResourceItem : AResourceItem {
 
         //--- Constructors ---
         public ResourceItem(
@@ -215,7 +215,7 @@ namespace LambdaSharp.Tool.Model {
                 : FnRef(FullName);
     }
 
-    public class FunctionItem : AResourceItem {
+    internal class FunctionItem : AResourceItem {
 
         //--- Constructors ---
         public FunctionItem(
@@ -269,7 +269,7 @@ namespace LambdaSharp.Tool.Model {
         public override bool HasPragma(string pragma) => Pragmas.Contains(pragma);
     }
 
-    public class ConditionItem : AModuleItem {
+    internal class ConditionItem : AModuleItem {
 
         //--- Constructors ---
         public ConditionItem(
@@ -284,7 +284,7 @@ namespace LambdaSharp.Tool.Model {
         }
     }
 
-    public class MappingItem : AModuleItem {
+    internal class MappingItem : AModuleItem {
 
         //--- Constructors ---
         public MappingItem(
@@ -302,7 +302,7 @@ namespace LambdaSharp.Tool.Model {
         public IDictionary<string, IDictionary<string, string>> Mapping => (IDictionary<string, IDictionary<string, string>>)Reference;
     }
 
-    public class ResourceTypeItem : AModuleItem {
+    internal class ResourceTypeItem : AModuleItem {
 
         //--- Constructors ---
         public ResourceTypeItem(

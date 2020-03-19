@@ -21,7 +21,7 @@ using System.Collections.Generic;
 
 namespace LambdaSharp.Tool.Internal {
 
-    public static class IEnumerableEx {
+    internal static class IEnumerableEx {
 
         //--- Extension Methods ---
         public static IEnumerable<T> Distinct<T,V>(this IEnumerable<T> items, Func<T,V> discriminator) {

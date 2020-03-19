@@ -20,7 +20,7 @@
 
 namespace Humidifier {
 
-    public class Principal {
+    internal class Principal {
 
         //--- Fields ---
         public object Service;

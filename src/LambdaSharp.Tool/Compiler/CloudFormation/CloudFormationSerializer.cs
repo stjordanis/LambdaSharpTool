@@ -23,7 +23,7 @@ using Newtonsoft.Json;
 
 namespace LambdaSharp.Tool.Compiler.CloudFormation {
 
-    public static class CloudFormationSerializer {
+    internal static class CloudFormationSerializer {
 
         //--- Class Methods ---
         public static string Serialize(CloudFormationTemplate template) {
@@ -41,7 +41,7 @@ namespace LambdaSharp.Tool.Compiler.CloudFormation {
         }
     }
 
-    public class CloudFormationTemplateConverter : JsonConverter {
+    internal class CloudFormationTemplateConverter : JsonConverter {
 
         //--- Methods ---
         public override object ReadJson(JsonReader reader, Type objectType, object? existingValue, JsonSerializer serializer) => throw new NotImplementedException();
@@ -79,7 +79,7 @@ namespace LambdaSharp.Tool.Compiler.CloudFormation {
         }
     }
 
-    public class CloudFormationResourceConverter : JsonConverter {
+    internal class CloudFormationResourceConverter : JsonConverter {
 
         //--- Methods ---
         public override object ReadJson(JsonReader reader, Type objectType, object? existingValue, JsonSerializer serializer) => throw new NotImplementedException();
@@ -114,7 +114,7 @@ namespace LambdaSharp.Tool.Compiler.CloudFormation {
         }
     }
 
-    public class CloudFormationObjectExpressionConverter : JsonConverter {
+    internal class CloudFormationObjectExpressionConverter : JsonConverter {
 
         //--- Methods ---
         public override object ReadJson(JsonReader reader, Type objectType, object? existingValue, JsonSerializer serializer) => throw new NotImplementedException();
@@ -132,7 +132,7 @@ namespace LambdaSharp.Tool.Compiler.CloudFormation {
         }
     }
 
-    public class CloudFormationListExpressionConverter : JsonConverter {
+    internal class CloudFormationListExpressionConverter : JsonConverter {
 
         //--- Methods ---
         public override object ReadJson(JsonReader reader, Type objectType, object? existingValue, JsonSerializer serializer) => throw new NotImplementedException();
@@ -149,7 +149,7 @@ namespace LambdaSharp.Tool.Compiler.CloudFormation {
         }
     }
 
-    public class CloudFormationLiteralExpressionConverter : JsonConverter {
+    internal class CloudFormationLiteralExpressionConverter : JsonConverter {
 
         //--- Methods ---
         public override object ReadJson(JsonReader reader, Type objectType, object? existingValue, JsonSerializer serializer) => throw new NotImplementedException();

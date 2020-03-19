@@ -36,7 +36,7 @@ using Newtonsoft.Json.Linq;
 
 namespace LambdaSharp.Tool {
 
-    public class ModelManifestLoader : AModelProcessor {
+    internal class ModelManifestLoader : AModelProcessor {
 
         //--- Types ---
         private class DependencyRecord {

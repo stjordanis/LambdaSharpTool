@@ -20,14 +20,14 @@ using System;
 
 namespace LambdaSharp.Tool.Compiler {
 
-    public class ShouldNeverHappenException : Exception {
+    internal class ShouldNeverHappenException : Exception {
 
         //--- Constructors ---
         public ShouldNeverHappenException() : this("this shouldn't happen") { }
         public ShouldNeverHappenException(string message) : base(message) { }
     }
 
-    public class NullValueException : Exception {
+    internal class NullValueException : Exception {
 
         //--- Constructors ---
         public NullValueException() { }

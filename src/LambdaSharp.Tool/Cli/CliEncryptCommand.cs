@@ -26,7 +26,7 @@ using McMaster.Extensions.CommandLineUtils;
 
 namespace LambdaSharp.Tool.Cli {
 
-    public class CliEncryptCommand : ACliCommand {
+    internal class CliEncryptCommand : ACliCommand {
 
         //--- Methods ---
         public void Register(CommandLineApplication app) {

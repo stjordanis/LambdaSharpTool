@@ -31,7 +31,7 @@ namespace LambdaSharp.Tool.Model {
     using System.IO.Compression;
     using static ModelFunctions;
 
-    public static class ResourceMapping {
+    internal static class ResourceMapping {
 
         //--- Fields ---
         public static readonly CloudFormationSpec CloudformationSpec;

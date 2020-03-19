@@ -22,13 +22,13 @@ using System.Collections.Generic;
 
 namespace LambdaSharp.Tool.Model {
 
-    public abstract class AFunctionSource {
+    internal abstract class AFunctionSource {
 
         //--- Abstract Methods ---
         public abstract void Visit(AModuleItem item, ModuleVisitorDelegate visitor);
     }
 
-    public class TopicSource : AFunctionSource {
+    internal class TopicSource : AFunctionSource {
 
        //--- Properties ---
         public object TopicName { get; set; }
@@ -42,7 +42,7 @@ namespace LambdaSharp.Tool.Model {
         }
     }
 
-    public class ScheduleSource : AFunctionSource {
+    internal class ScheduleSource : AFunctionSource {
 
        //--- Properties ---
         public object Expression { get; set; }
@@ -60,7 +60,7 @@ namespace LambdaSharp.Tool.Model {
         SlackCommand
     }
 
-    public class RestApiSource : AFunctionSource {
+    internal class RestApiSource : AFunctionSource {
 
        //--- Properties ---
         public string HttpMethod { get; set; }
@@ -84,7 +84,7 @@ namespace LambdaSharp.Tool.Model {
         public override void Visit(AModuleItem item, ModuleVisitorDelegate visitor) { }
     }
 
-    public class WebSocketSource : AFunctionSource {
+    internal class WebSocketSource : AFunctionSource {
 
         //--- Properties ---
         public string RouteKey { get; set; }
@@ -105,7 +105,7 @@ namespace LambdaSharp.Tool.Model {
         public override void Visit(AModuleItem item, ModuleVisitorDelegate visitor) { }
     }
 
-    public class S3Source : AFunctionSource {
+    internal class S3Source : AFunctionSource {
 
        //--- Properties ---
         public object Bucket { get; set; }
@@ -121,7 +121,7 @@ namespace LambdaSharp.Tool.Model {
         }
     }
 
-    public class SqsSource : AFunctionSource {
+    internal class SqsSource : AFunctionSource {
 
        //--- Properties ---
         public object Queue { get; set; }
@@ -138,7 +138,7 @@ namespace LambdaSharp.Tool.Model {
         }
     }
 
-    public class AlexaSource : AFunctionSource {
+    internal class AlexaSource : AFunctionSource {
 
         //--- Properties ---
         public object EventSourceToken { get; set; }
@@ -151,7 +151,7 @@ namespace LambdaSharp.Tool.Model {
         }
     }
 
-    public class DynamoDBSource : AFunctionSource {
+    internal class DynamoDBSource : AFunctionSource {
 
        //--- Properties ---
         public object DynamoDB { get; set; }
@@ -172,7 +172,7 @@ namespace LambdaSharp.Tool.Model {
         }
     }
 
-    public class KinesisSource : AFunctionSource {
+    internal class KinesisSource : AFunctionSource {
 
        //--- Properties ---
         public object Kinesis { get; set; }

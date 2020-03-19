@@ -28,7 +28,7 @@ using LambdaSharp.Tool.Compiler.Parser;
 
 namespace LambdaSharp.Tool {
 
-    public abstract class AModelProcessor : ILambdaSharpParserDependencyProvider {
+    internal abstract class AModelProcessor : ILambdaSharpParserDependencyProvider {
 
         //--- Constants ---
         protected const string CLOUDFORMATION_ID_PATTERN = "[a-zA-Z][a-zA-Z0-9]*";

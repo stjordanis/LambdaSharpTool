@@ -25,7 +25,7 @@ using Newtonsoft.Json;
 
 namespace LambdaSharp.Tool {
 
-    public class ModuleLocation {
+    internal class ModuleLocation {
 
         //--- Fields ---
         public readonly string SourceBucketName;
@@ -45,7 +45,7 @@ namespace LambdaSharp.Tool {
     }
 
     [JsonConverter(typeof(ModuleInfoConverter))]
-    public class ModuleInfo {
+    internal class ModuleInfo {
 
         // NOTE: module reference formats:
         // * Namespace.Name
@@ -156,7 +156,7 @@ namespace LambdaSharp.Tool {
         public ModuleInfo WithOrigin(string origin) => new ModuleInfo(Namespace, Name, Version, origin);
     }
 
-    public class ModuleInfoConverter : JsonConverter {
+    internal class ModuleInfoConverter : JsonConverter {
 
         //--- Methods ---
         public override bool CanConvert(Type objectType)

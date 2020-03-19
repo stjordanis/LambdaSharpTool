@@ -22,7 +22,7 @@ using System.Collections.Generic;
 
 namespace LambdaSharp.Tool.Model {
 
-    public class Resource {
+    internal class Resource {
 
         //--- Properties ---
         public string Type { get; set; }

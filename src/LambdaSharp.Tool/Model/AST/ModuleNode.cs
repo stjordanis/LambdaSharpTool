@@ -22,7 +22,7 @@ using System.Collections.Generic;
 
 namespace LambdaSharp.Tool.Model.AST {
 
-    public class ModuleNode {
+    internal class ModuleNode {
 
         //--- Properties ---
         public string Module { get; set; }

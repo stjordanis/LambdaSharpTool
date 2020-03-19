@@ -24,7 +24,7 @@ using McMaster.Extensions.CommandLineUtils;
 
 namespace LambdaSharp.Tool.Cli {
 
-    public class CliListCommand : ACliCommand {
+    internal class CliListCommand : ACliCommand {
 
         //--- Methods ---
         public void Register(CommandLineApplication app) {

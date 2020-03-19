@@ -38,11 +38,11 @@ using Newtonsoft.Json.Converters;
 
 namespace LambdaSharp.Tool {
 
-    public class LambdaSharpException : Exception {
+    internal class LambdaSharpException : Exception {
 
     }
 
-    public class LambdaSharpDeploymentTierSetupException : LambdaSharpException {
+    internal class LambdaSharpDeploymentTierSetupException : LambdaSharpException {
 
         //--- Fields ---
         public readonly string TierName;
@@ -53,7 +53,7 @@ namespace LambdaSharp.Tool {
         }
     }
 
-    public class LambdaSharpToolOutOfDateException : LambdaSharpException {
+    internal class LambdaSharpToolOutOfDateException : LambdaSharpException {
 
         //--- Fields ---
         public readonly VersionInfo Version;
@@ -64,7 +64,7 @@ namespace LambdaSharp.Tool {
         }
     }
 
-    public class LambdaSharpDeploymentTierOutOfDateException : LambdaSharpException {
+    internal class LambdaSharpDeploymentTierOutOfDateException : LambdaSharpException {
 
         //--- Fields ---
         public readonly string TierName;
@@ -83,7 +83,7 @@ namespace LambdaSharp.Tool {
         Enabled
     }
 
-    public class Settings {
+    internal class Settings {
 
         //--- Constants ---
         public const string Lash = "lash";

@@ -28,7 +28,7 @@ using LambdaSharp.Tool.Model;
 namespace Humidifier {
     using static ModelFunctions;
 
-    public class CustomResource : Resource, IDictionary<string, object>, IDictionary {
+    internal class CustomResource : Resource, IDictionary<string, object>, IDictionary {
 
         //--- Fields ---
         private readonly string _awsTypeName;

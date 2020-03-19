@@ -24,7 +24,7 @@ using LambdaSharp.Tool.Model;
 namespace LambdaSharp.Tool.Cli.Build {
     using static ModelFunctions;
 
-    public class ModelPostLinkerValidation : AModelProcessor {
+    internal class ModelPostLinkerValidation : AModelProcessor {
 
         //--- Fields ---
         private ModuleBuilder _builder;

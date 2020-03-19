@@ -27,7 +27,7 @@ using LambdaSharp.Tool.Compiler.Syntax;
 
 namespace LambdaSharp.Tool.Cli.Build {
 
-    public class BuildStep : AModelProcessor {
+    internal class BuildStep : AModelProcessor {
 
         //--- Constructors ---
         public BuildStep(Settings settings, string sourceFilename) : base(settings, sourceFilename) { }

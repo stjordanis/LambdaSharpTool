@@ -24,7 +24,7 @@ using LambdaSharp.Tool.Compiler.Syntax;
 
 namespace LambdaSharp.Tool.Compiler.Analyzers {
 
-    public partial class StructureAnalyzer {
+    internal partial class StructureAnalyzer {
 
         //--- Methods ---
         public override bool VisitStart(ParameterDeclaration node) {

@@ -30,7 +30,7 @@ using Newtonsoft.Json.Linq;
 
 namespace LambdaSharp.Tool.Cli.Build {
 
-    public class ModelStackGenerator : AModelProcessor {
+    internal class ModelStackGenerator : AModelProcessor {
 
         //--- Fields ---
         private Module _module;

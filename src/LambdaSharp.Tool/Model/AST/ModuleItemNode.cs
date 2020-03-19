@@ -22,7 +22,7 @@ using System.Collections.Generic;
 
 namespace LambdaSharp.Tool.Model.AST {
 
-    public class ModuleItemNode {
+    internal class ModuleItemNode {
 
         //--- Class Fields ---
         public static readonly Dictionary<string, IEnumerable<string>> FieldCombinations = new Dictionary<string, IEnumerable<string>> {

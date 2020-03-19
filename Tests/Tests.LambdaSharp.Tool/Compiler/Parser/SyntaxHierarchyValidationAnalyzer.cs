@@ -24,7 +24,7 @@ using LambdaSharp.Tool.Compiler.Syntax;
 
 namespace Tests.LambdaSharp.Tool.Compiler.Parser {
 
-    public class SyntaxHierarchyValidationAnalyzer : ISyntaxVisitor {
+    internal class SyntaxHierarchyValidationAnalyzer : ISyntaxVisitor {
 
         //--- Methods ---
         public ASyntaxNode VisitEnd(ModuleDeclaration node) => node;

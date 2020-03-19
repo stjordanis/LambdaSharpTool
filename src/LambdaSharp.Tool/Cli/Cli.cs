@@ -24,7 +24,7 @@ using System.Reflection;
 namespace LambdaSharp.Tool.Cli {
 
 
-    public class CliBase {
+    internal class CliBase {
 
         //--- Class Fields ---
         private static VersionInfo _version;

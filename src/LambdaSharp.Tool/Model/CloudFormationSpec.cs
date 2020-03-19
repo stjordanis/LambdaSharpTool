@@ -23,7 +23,7 @@ using System.Collections.Generic;
 
 namespace LambdaSharp.Tool.Model {
 
-    public class CloudFormationSpec {
+    internal class CloudFormationSpec {
 
         // SEE: https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/cfn-resource-specification-format.html
 
@@ -69,7 +69,7 @@ namespace LambdaSharp.Tool.Model {
                 || PropertyTypes.TryGetValue(itemTypeName, out type);
     }
 
-    public class ResourceType {
+    internal class ResourceType {
 
         //--- Properties ---
         public string Documentation { get; set; }
@@ -77,7 +77,7 @@ namespace LambdaSharp.Tool.Model {
         public Dictionary<string, PropertyType> Properties { get; set; }
     }
 
-    public class AttributeType {
+    internal class AttributeType {
 
         //--- Properties ---
         public string ItemType { get; set; }
@@ -86,7 +86,7 @@ namespace LambdaSharp.Tool.Model {
         public string Type { get; set; }
     }
 
-    public class PropertyType {
+    internal class PropertyType {
 
         //--- Properties ---
 

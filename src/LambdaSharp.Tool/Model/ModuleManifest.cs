@@ -26,7 +26,7 @@ using Newtonsoft.Json.Converters;
 
 namespace LambdaSharp.Tool.Model {
 
-    public class ModuleNameMappings {
+    internal class ModuleNameMappings {
 
         //--- Constants ---
         public const string CurrentVersion = "2019-07-04";
@@ -38,7 +38,7 @@ namespace LambdaSharp.Tool.Model {
         public IDictionary<string, string> TypeNameMappings { get; set; } = new Dictionary<string, string>();
     }
 
-    public class ModuleManifest {
+    internal class ModuleManifest {
 
         //--- Constants ---
         public const string CurrentVersion = "2019-07-04";
@@ -70,14 +70,14 @@ namespace LambdaSharp.Tool.Model {
             => ParameterSections.SelectMany(section => section.Parameters);
     }
 
-    public class ModuleManifestGitInfo {
+    internal class ModuleManifestGitInfo {
 
         //--- Properties ---
         public string Branch { get; set; }
         public string SHA { get; set; }
     }
 
-    public class ModuleManifestResourceType {
+    internal class ModuleManifestResourceType {
 
        //--- Properties ---
        public string Type { get; set; }
@@ -86,7 +86,7 @@ namespace LambdaSharp.Tool.Model {
        public IEnumerable<ModuleManifestResourceAttribute> Attributes { get; set; } = new List<ModuleManifestResourceAttribute>();
     }
 
-    public class ModuleManifestResourceProperty {
+    internal class ModuleManifestResourceProperty {
 
        //--- Properties ---
        public string Name { get; set; }
@@ -95,7 +95,7 @@ namespace LambdaSharp.Tool.Model {
        public bool Required { get; set; } = true;
     }
 
-    public class ModuleManifestResourceAttribute {
+    internal class ModuleManifestResourceAttribute {
 
        //--- Properties ---
        public string Name { get; set; }
@@ -103,7 +103,7 @@ namespace LambdaSharp.Tool.Model {
        public string Type { get; set; } = "String";
     }
 
-    public class ModuleManifestOutput {
+    internal class ModuleManifestOutput {
 
         //--- Properties ---
         public string Name { get; set; }
@@ -111,7 +111,7 @@ namespace LambdaSharp.Tool.Model {
         public string Type { get; set; }
     }
 
-    public class ModuleManifestMacro {
+    internal class ModuleManifestMacro {
 
         //--- Properties ---
         public string Name { get; set; }
@@ -125,21 +125,21 @@ namespace LambdaSharp.Tool.Model {
         Shared
     }
 
-    public class ModuleManifestDependency {
+    internal class ModuleManifestDependency {
 
         //--- Properties ---
         public ModuleInfo ModuleInfo { get; set; }
         public ModuleManifestDependencyType Type { get; set; }
     }
 
-    public class ModuleManifestParameterSection {
+    internal class ModuleManifestParameterSection {
 
         //--- Properties ---
         public string Title { get; set; }
         public IList<ModuleManifestParameter> Parameters { get; set; } = new List<ModuleManifestParameter>();
     }
 
-    public class ModuleManifestParameter {
+    internal class ModuleManifestParameter {
 
         //--- Properties ---
         public string Name { get; set; }

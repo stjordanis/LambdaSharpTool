@@ -33,7 +33,7 @@ using McMaster.Extensions.CommandLineUtils;
 
 namespace LambdaSharp.Tool.Cli {
 
-    public class CliInfoCommand : ACliCommand {
+    internal class CliInfoCommand : ACliCommand {
 
         //--- Methods ---
         public void Register(CommandLineApplication app) {

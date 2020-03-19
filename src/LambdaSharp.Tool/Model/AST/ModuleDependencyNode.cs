@@ -20,7 +20,7 @@
 
 namespace LambdaSharp.Tool.Model.AST {
 
-    public class ModuleDependencyNode {
+    internal class ModuleDependencyNode {
 
         //--- Properties ---
         public string Module { get; set; }

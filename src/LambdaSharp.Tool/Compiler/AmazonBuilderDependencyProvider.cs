@@ -35,7 +35,7 @@ using Newtonsoft.Json;
 
 namespace LambdaSharp.Tool.Compiler {
 
-    public class AmazonBuilderDependencyProvider : IBuilderDependencyProvider {
+    internal class AmazonBuilderDependencyProvider : IBuilderDependencyProvider {
 
         //--- Fields ---
         private readonly ILogger _logger;

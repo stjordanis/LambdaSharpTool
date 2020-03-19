@@ -29,7 +29,7 @@ namespace LambdaSharp.Tool.Cli.Deploy {
     using CloudFormationStack = Amazon.CloudFormation.Model.Stack;
     using CloudFormationParameter = Amazon.CloudFormation.Model.Parameter;
 
-    public class DeployStep : AModelProcessor {
+    internal class DeployStep : AModelProcessor {
 
 
         //--- Fields ---

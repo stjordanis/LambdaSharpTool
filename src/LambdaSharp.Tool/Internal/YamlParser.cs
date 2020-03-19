@@ -26,7 +26,7 @@ using YamlDotNet.Core.Events;
 
 namespace LambdaSharp.Tool.Internal {
 
-    public class YamlStream {
+    internal class YamlStream {
 
         //--- Properties ---
         public StreamStart Start { get; set; }
@@ -43,7 +43,7 @@ namespace LambdaSharp.Tool.Internal {
         }
     }
 
-    public class YamlDocument {
+    internal class YamlDocument {
 
         //--- Properties ---
         public DocumentStart Start { get; set; }
@@ -60,13 +60,13 @@ namespace LambdaSharp.Tool.Internal {
         }
     }
 
-    public abstract class AYamlValue {
+    internal abstract class AYamlValue {
 
         //--- Methods ---
         public abstract void AppendTo(List<ParsingEvent> parsingEvents);
     }
 
-    public class YamlMap : AYamlValue {
+    internal class YamlMap : AYamlValue {
 
         //--- Properties ---
         public MappingStart Start { get; set; }
@@ -84,7 +84,7 @@ namespace LambdaSharp.Tool.Internal {
         }
     }
 
-    public class YamlScalar : AYamlValue {
+    internal class YamlScalar : AYamlValue {
 
         //--- Constructors ---
         public YamlScalar() { }
@@ -102,7 +102,7 @@ namespace LambdaSharp.Tool.Internal {
         }
     }
 
-    public class YamlAnchorAlias : AYamlValue {
+    internal class YamlAnchorAlias : AYamlValue {
 
         //--- Constructors ---
         public YamlAnchorAlias() { }
@@ -120,7 +120,7 @@ namespace LambdaSharp.Tool.Internal {
         }
     }
 
-    public class YamlSequence : AYamlValue {
+    internal class YamlSequence : AYamlValue {
 
         //--- Properties ---
         public SequenceStart Start { get; set; }
@@ -137,7 +137,7 @@ namespace LambdaSharp.Tool.Internal {
         }
     }
 
-    public class YamlParsingEventsParser : IParser {
+    internal class YamlParsingEventsParser : IParser {
 
         //--- Fields ---
         private readonly IEnumerator<ParsingEvent> _parsingEventsEnumerator;
@@ -153,7 +153,7 @@ namespace LambdaSharp.Tool.Internal {
         public bool MoveNext() => _parsingEventsEnumerator.MoveNext();
     }
 
-    public class YamlParser {
+    internal class YamlParser {
 
         //--- Class Methods ---
         public static YamlStream Parse(string source) {

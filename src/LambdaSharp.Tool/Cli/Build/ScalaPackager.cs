@@ -33,7 +33,7 @@ using Newtonsoft.Json.Linq;
 
 namespace LambdaSharp.Tool.Cli.Build {
 
-    public class ScalaPackager {
+    internal class ScalaPackager {
 
         //--- Class Methods ---
         public static void DetermineFunctionProperties(

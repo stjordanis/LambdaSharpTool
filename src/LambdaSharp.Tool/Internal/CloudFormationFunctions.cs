@@ -31,9 +31,9 @@ using YamlDotNet.Serialization.ObjectFactories;
 namespace LambdaSharp.Tool.Internal {
 
     [TypeConverter(typeof(CloudFormationFunctionTypeConverter))]
-    public class CloudFormationListFunction : List<object> { }
+    internal class CloudFormationListFunction : List<object> { }
 
-    public class CloudFormationFunctionTypeConverter : TypeConverter {
+    internal class CloudFormationFunctionTypeConverter : TypeConverter {
 
         //--- Methods ---
         public override bool CanConvertTo(ITypeDescriptorContext context, Type destinationType)
@@ -49,9 +49,9 @@ namespace LambdaSharp.Tool.Internal {
             => value;
     }
 
-    public class CloudFormationMapFunction : Dictionary<string, object> { }
+    internal class CloudFormationMapFunction : Dictionary<string, object> { }
 
-    public static class CloudFromationFunctionsEx {
+    internal static class CloudFromationFunctionsEx {
 
         //--- Class Methods ---
         public static DeserializerBuilder WithCloudFormationFunctions(this DeserializerBuilder builder) {
@@ -63,7 +63,7 @@ namespace LambdaSharp.Tool.Internal {
         }
     }
 
-    public class CloudFormationFunctionNodeDeserializer : INodeDeserializer {
+    internal class CloudFormationFunctionNodeDeserializer : INodeDeserializer {
 
         //--- Class Fields ---
         public static HashSet<string> SupportedTags = new HashSet<string> {

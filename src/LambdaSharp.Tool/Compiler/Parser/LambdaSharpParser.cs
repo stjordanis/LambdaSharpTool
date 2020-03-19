@@ -29,7 +29,7 @@ using YamlDotNet.Core.Events;
 
 namespace LambdaSharp.Tool.Compiler.Parser {
 
-    public interface ILambdaSharpParserDependencyProvider {
+    internal interface ILambdaSharpParserDependencyProvider {
 
         //--- Methods ---
 
@@ -38,7 +38,7 @@ namespace LambdaSharp.Tool.Compiler.Parser {
         string ReadFile(string filePath);
     }
 
-    public sealed class LambdaSharpParser {
+    internal sealed class LambdaSharpParser {
 
         // TODO:
         //  - `cloudformation package`, when given a YAML template, converts even explicit strings to integers when the string begins with a 0 and contains nothing but digits · Issue #2934 · aws/aws-cli · GitHub (https://github.com/aws/aws-cli/issues/2934)
