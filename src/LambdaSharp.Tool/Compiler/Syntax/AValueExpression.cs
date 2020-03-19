@@ -90,7 +90,7 @@ namespace LambdaSharp.Tool.Compiler.Syntax {
         public bool TryGetValue(string key, [NotNullWhen(true)] out AExpression? value) {
             var found = _pairs.FirstOrDefault(item => item.Key.Value == key);
             value = found?.Value;
-            return found != null;
+            return value != null;
         }
 
         public bool Remove(string key) {

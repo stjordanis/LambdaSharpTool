@@ -131,7 +131,7 @@ namespace LambdaSharp.Tool.Compiler.CloudFormation {
         public bool TryGetValue(string key, [NotNullWhen(true)] out ACloudFormationExpression? value) {
             var found = _pairs.FirstOrDefault(item => item.Key == key);
             value = found?.Value;
-            return found != null;
+            return value != null;
         }
 
         public bool Remove(string key) {
