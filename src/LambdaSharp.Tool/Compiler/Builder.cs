@@ -35,40 +35,17 @@ using Newtonsoft.Json.Linq;
 namespace LambdaSharp.Tool.Compiler {
 
     // TODO:
-    //  - record declarations
     //  - import missing information
-    //      - other modules manifests
     //      - convert secret key alias to ARN
-    //      - cloudformation spec (if need be)
-    //  - define custom resource types
     //  - validate usage against imported definitions
     //  - validate nested expressions (done: ValidateExpressionsVisitor)
-    //  - create derivative resources
-    //  - resolve all references
-    //  - validate all !GetAtt occurrences (including those inside a !Sub expression)
-    //      - check if this declaration should be typechecked
-    //          - if(foundDeclaration.HasTypeValidation) ...
-    //          - if(foundDeclaration.HasAttribute(literalExpression.Value)) ...
-    //          - LogError($"item '{freeItem.FullName}' of type '{freeItem.Type}' does not have attribute '{attributeName}'");
     //  - add optimization phase that simplifies !Sub statements and removed redundant conditional expressions in !If statements
-    //  - the !Ref expression can ONLY reference parameters from within a 'Condition' declaration
-    //  - validate if attribute name exists on resource type (unless type checking is disabled for this declration)
-    //  - for !Ref, must know what types of references are legal (Parameters only -or- Resources and Paramaters)
     //  - register custom resource types for the module
     //  - detect cycle between custom resource handler and an instance of the custom resource in its handler
     //  - CloudFormation expression type validation
-    //  - tests
-    //      - !If with expression in condition
-    //      - !If with literal in condition
-    //      - condition declaration with reference to non-parameter declaration
-    //      - circular dependencies
     //  - warn on unrecognized pragmas
     //  - nested module parameters can only be scalar or list (correct?)
     //  - lambda environment variable values must be scalar or list (correct?)
-    //  - replace `new ArgumentNullException(nameof(value))` with `new ArgumentNullException()` in properties
-    //  - throw `InvalidOperationException` when accessing a null property with a non-nullable type
-    //  - rename 'Builder' to 'BuildContext'
-    //  - test what two "Import" declarations for the same source look like in the generated CloudFormation
 
     internal interface IBuilderDependencyProvider : ILogger {
 
@@ -133,7 +110,8 @@ namespace LambdaSharp.Tool.Compiler {
         public CloudFormationModuleManifestDependencyType Type;
     }
 
-    // TODO: rename class since it's not really used for building the final result; it's more about tracking meta-data of the module
+    // TODO: rename class since it's not really used for building the final result; it's more about tracking meta-data of the module;
+    //  consider renaming to 'BuildContext'
     internal class Builder : ILogger {
 
         //--- Class Fields ---
@@ -199,14 +177,11 @@ namespace LambdaSharp.Tool.Compiler {
                 _provider.Log(Error.DuplicateName(declaration.FullName), declaration);
             }
 
-            // TODO: it might be better to just report a conflict instead
-            // find a valid CloudFormation logical ID
-            var baseLogicalId = declaration.FullName.Replace("::", "");
-            var logicalIdSuffix = 0;
-            var logicalId = baseLogicalId;
-            while(!_logicalIds.Add(logicalId)) {
-                ++logicalIdSuffix;
-                logicalId = baseLogicalId + logicalIdSuffix;
+            // generate logical ID and check that it is unambiguous
+            string fullName = declaration.FullName;
+            var logicalId = fullName.Replace("::", "");
+            if(!_logicalIds.Add(logicalId)) {
+                _provider.Log(Error.AmbiguousLogicalId(fullName));
             }
             declaration.LogicalId = logicalId;
         }

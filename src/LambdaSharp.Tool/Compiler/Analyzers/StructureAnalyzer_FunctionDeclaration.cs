@@ -196,8 +196,6 @@ namespace LambdaSharp.Tool.Compiler.Analyzers {
                     // TODO (2019-10-25, bjorg): allow 'LogRetentionInDays' attribute on 'Function' declaration
                     ["RetentionInDays"] = Fn.Ref("Module::LogRetentionInDays")
                 },
-
-                // TODO: we should clone this
                 If = node.If
             });
 
@@ -220,8 +218,6 @@ namespace LambdaSharp.Tool.Compiler.Analyzers {
                         ["DeploymentChecksum"] = Fn.Ref("DeploymentChecksum"),
                         ["ModuleVersion"] = Fn.Literal(_builder.ModuleVersion.ToString())
                     },
-
-                    // TODO: we should clone this
                     If = node.If
                 });
             }
@@ -390,7 +386,7 @@ namespace LambdaSharp.Tool.Compiler.Analyzers {
                     || (segment == "{}")
                     || (segment == "{+}")
                 ).Any()) {
-                    _builder.Log(Error.ApiEventSourceInvalidApiFormat, node.EventSource);
+                    _builder.Log(Error.RestApiEventSourceInvalidApiFormat, node.EventSource);
                 } else {
 
                     // check if the API path has a greedy parameter and ensure it is the last parameter
@@ -399,16 +395,16 @@ namespace LambdaSharp.Tool.Compiler.Analyzers {
                         Segment = segment
                     }).FirstOrDefault(t => t.Segment.EndsWith("+}", StringComparison.Ordinal));
                     if((greedyParameter != null) && (greedyParameter.Index != (node.ApiPath.Length - 1))) {
-                        _builder.Log(Error.ApiEventSourceInvalidGreedyParameterMustBeLast(greedyParameter.Segment), node.EventSource);
+                        _builder.Log(Error.RestApiEventSourceGreedyParameterMustBeLast(greedyParameter.Segment), node.EventSource);
                     }
                 }
             } else {
-                _builder.Log(Error.ApiEventSourceInvalidApiFormat, node);
+                _builder.Log(Error.RestApiEventSourceInvalidApiFormat, node);
             }
 
             // parse integration into a valid enum
             if(!Enum.TryParse<ApiEventSourceDeclaration.IntegrationType>(node.Integration.Value ?? "RequestResponse", ignoreCase: true, out var integration)) {
-                _builder.Log(Error.ApiEventSourceUnsupportedIntegrationType, node.Integration);
+                _builder.Log(Error.RestApiEventSourceUnsupportedIntegrationType, node.Integration);
             }
             node.ApiIntegrationType = integration;
             return true;
@@ -515,7 +511,7 @@ namespace LambdaSharp.Tool.Compiler.Analyzers {
                 node.BatchSize = Fn.Literal(100);
             } else if(node.BatchSize is LiteralExpression batchSizeLiteral) {
                 if(!int.TryParse(batchSizeLiteral.Value, out var batchSize) || ((batchSize < 1) || (batchSize > 1000))) {
-                    _builder.Log(Error.DynamoDBEventSourceInvalidBatchSize, node.BatchSize);
+                    _builder.Log(Error.DynamoDBStreamEventSourceInvalidBatchSize, node.BatchSize);
                 }
             }
 
@@ -530,7 +526,7 @@ namespace LambdaSharp.Tool.Compiler.Analyzers {
                     // nothing to do
                     break;
                 default:
-                    _builder.Log(Error.DynamoDBEventSourceInvalidStartingPosition, node.StartingPosition);
+                    _builder.Log(Error.DynamoDBStreamEventSourceInvalidStartingPosition, node.StartingPosition);
                     break;
                 }
             }
@@ -538,7 +534,7 @@ namespace LambdaSharp.Tool.Compiler.Analyzers {
             // validate 'MaximumBatchingWindowInSeconds' for DynamoDB source
             if(node.MaximumBatchingWindowInSeconds is LiteralExpression maximumBatchingWindowInSecondsLiteral) {
                 if(!int.TryParse(maximumBatchingWindowInSecondsLiteral.Value, out var maximumBatchingWindowInSeconds) || ((maximumBatchingWindowInSeconds < 0) || (maximumBatchingWindowInSeconds > 300))) {
-                    _builder.Log(Error.DynamoDBEventSourceInvalidMaximumBatchingWindowInSeconds, node.BatchSize);
+                    _builder.Log(Error.DynamoDBStreamEventSourceInvalidMaximumBatchingWindowInSeconds, node.BatchSize);
                 }
             }
             return true;
@@ -551,7 +547,7 @@ namespace LambdaSharp.Tool.Compiler.Analyzers {
                 node.BatchSize = Fn.Literal(100);
             } else if(node.BatchSize is LiteralExpression batchSizeLiteral) {
                 if(!int.TryParse(batchSizeLiteral.Value, out var batchSize) || ((batchSize < 1) || (batchSize > 10000))) {
-                    _builder.Log(Error.KinesisEventSourceInvalidBatchSize, node.BatchSize);
+                    _builder.Log(Error.KinesisStreamEventSourceInvalidBatchSize, node.BatchSize);
                 }
             }
 
@@ -567,7 +563,7 @@ namespace LambdaSharp.Tool.Compiler.Analyzers {
                     // nothing to do
                     break;
                 default:
-                    _builder.Log(Error.KinesisEventSourceInvalidStartingPosition, node.StartingPosition);
+                    _builder.Log(Error.KinesisStreamEventSourceInvalidStartingPosition, node.StartingPosition);
                     break;
                 }
             }
@@ -575,7 +571,7 @@ namespace LambdaSharp.Tool.Compiler.Analyzers {
             // validate 'MaximumBatchingWindowInSeconds' for DynamoDB source
             if(node.MaximumBatchingWindowInSeconds is LiteralExpression maximumBatchingWindowInSecondsLiteral) {
                 if(!int.TryParse(maximumBatchingWindowInSecondsLiteral.Value, out var maximumBatchingWindowInSeconds) || ((maximumBatchingWindowInSeconds < 0) || (maximumBatchingWindowInSeconds > 300))) {
-                    _builder.Log(Error.KinesisEventSourceInvalidMaximumBatchingWindowInSeconds, node.BatchSize);
+                    _builder.Log(Error.KinesisStreamEventSourceInvalidMaximumBatchingWindowInSeconds, node.BatchSize);
                 }
             }
             return true;
@@ -602,7 +598,10 @@ namespace LambdaSharp.Tool.Compiler.Analyzers {
                 }
             }
 
-            // TODO: 'node.ApiKeyRequired' value must a boolean
+            // validate 'ApiKeyRequired' is a boolean literal
+            if((node.ApiKeyRequired != null) && (node.ApiKeyRequired.Type != LiteralType.Bool)) {
+                _builder.Log(Error.WebSocketApiKeyRequiredExpectedBoolean, node.EventSource);
+            }
 
             // validate 'AuthorizationType' for WebSocket source
             if(node.AuthorizationType != null) {

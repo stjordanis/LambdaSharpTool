@@ -62,7 +62,8 @@ namespace LambdaSharp.Tool.Compiler.Analyzers {
         private readonly Builder _builder;
 
         //--- Constructors ---
-        public DiscoverDependenciesAnalyzer(Builder builder) => _builder = builder ?? throw new System.ArgumentNullException(nameof(builder));
+        public DiscoverDependenciesAnalyzer(Builder builder)
+            => _builder = builder ?? throw new System.ArgumentNullException(nameof(builder));
 
         //--- Methods ---
         public override bool VisitStart(ModuleDeclaration node) {

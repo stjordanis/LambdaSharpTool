@@ -138,19 +138,13 @@ namespace LambdaSharp.Tool.Compiler.Analyzers {
             // validate module name
             if(ModuleInfo.TryParse(node.Module.Value, out var moduleInfo)) {
                 if(moduleInfo.Version != null) {
-
-                    // TODO: move to Error.cs
-                    _builder.Log(new Error(0, "'Module' attribute cannot have a version"), node.Module);
+                    _builder.Log(Error.ImportModuleAttributeCannotHaveVersion, node.Module);
                 }
                 if(moduleInfo.Origin != null) {
-
-                    // TODO: move to Error.cs
-                    _builder.Log(new Error(0, "'Module' attribute cannot have an origin"), node.Module);
+                    _builder.Log(Error.ImportModuleAttributeCannotHaveOrigin, node.Module);
                 }
             } else {
-
-                // TODO: move to Error.cs
-                _builder.Log(new Error(0, "invalid 'Module' attribute"), node.Module);
+                _builder.Log(Error.ImportModuleAttributeIsInvalid, node.Module);
             }
 
             // validate import type
@@ -176,13 +170,9 @@ namespace LambdaSharp.Tool.Compiler.Analyzers {
                     // NOTE (2020-02-27, bjorg): if an import declaration already exists for this value, it must be identical in every way; such duplicates
                     //  are allowed, because it is not possible to know ahead of time if a value was already imported
                     if(existingParameterDeclaration.Import?.Value != import) {
-
-                        // TODO: move to Error.cs
-                        _builder.Log(new Error(0, $"import declaration '{importParameterName}' is already defined with a different binding"), foundDeclaration);
+                        _builder.Log(Error.ImportDuplicateWithDifferentBinding(importParameterName), foundDeclaration);
                     } else if(existingParameterDeclaration.Type.Value != node.Type.Value) {
-
-                        // TODO: move to Error.cs
-                        _builder.Log(new Error(0, $"import declaration '{importParameterName}' is already defined with a different type"), foundDeclaration);
+                        _builder.Log(Error.ImportDuplicateWithDifferentType(importParameterName), foundDeclaration);
                     }
                 } else {
                     _builder.Log(Error.DuplicateName(importParameterName), foundDeclaration);
@@ -614,7 +604,7 @@ namespace LambdaSharp.Tool.Compiler.Analyzers {
         public override bool VisitStart(GetAttFunctionExpression node) {
             AssertIsValueExpression(node.AttributeName);
 
-            // TODO: validate the attribute exists on !GetAtt on the given resource type
+            // TODO: validate the attribute exists on !GetAtt on the given resource type (unless type checking is disabled for this declration)
             return true;
         }
 

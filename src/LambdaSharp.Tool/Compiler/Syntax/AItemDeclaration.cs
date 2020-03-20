@@ -51,12 +51,26 @@ namespace LambdaSharp.Tool.Compiler.Syntax {
             public AExpression Expression { get; }
         }
 
+        internal class MissingDependencyRecord {
+
+            //--- Constructors ---
+            public MissingDependencyRecord(string declarationFullName, ASyntaxNode node) {
+                MissingDeclarationFullName = declarationFullName ?? throw new ArgumentNullException(nameof(declarationFullName));
+                Node = node ?? throw new ArgumentNullException(nameof(node));
+            }
+
+            //--- Properties ---
+            public string MissingDeclarationFullName { get; }
+            public ASyntaxNode Node{ get; }
+        }
+
         //--- Fields ---
         private string? _logicalId;
         private LiteralExpression? _description;
         private AExpression? _referenceExpression;
         private readonly List<DependencyRecord> _dependencies = new List<DependencyRecord>();
         private readonly List<DependencyRecord> _reverseDependencies = new List<DependencyRecord>();
+        private readonly List<MissingDependencyRecord> _missingDependencies = new List<MissingDependencyRecord>();
         private SyntaxNodeCollection<AItemDeclaration> _declarations;
 
         //--- Constructors ---
@@ -155,6 +169,9 @@ namespace LambdaSharp.Tool.Compiler.Syntax {
                 return conditions;
             }
         }
+
+        public void TrackMissingDependency(string declarationFullName, ASyntaxNode dependentNode)
+            => _missingDependencies.Add(new MissingDependencyRecord(declarationFullName, dependentNode));
 
         public void UntrackDependency(AExpression dependentExpression)
             => _reverseDependencies.RemoveAll(reverseDependency => reverseDependency.Expression == dependentExpression);

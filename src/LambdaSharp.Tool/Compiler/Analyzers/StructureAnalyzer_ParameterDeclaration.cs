@@ -144,9 +144,7 @@ namespace LambdaSharp.Tool.Compiler.Analyzers {
 
                 // only value parameters can have 'Import' attribute
                 if(node.Import != null) {
-
-                    // TODO: move to Error.cs
-                    _builder.Log(new Error(0, "'Import' attribute can only be used with a value parameter type"), node.Properties);
+                    _builder.Log(Error.ParameterAttributeImportExpectedLiteral, node.Properties);
                 }
             }
 
@@ -165,33 +163,23 @@ namespace LambdaSharp.Tool.Compiler.Analyzers {
                     export = moduleParts[1];
                 } else {
                     export = "MISSING";
-
-                    // TODO: move to Error.cs
-                    _builder.Log(new Error(0, "invalid 'Import' attribute"), node.Import);
+                    _builder.Log(Error.ParameterImportAttributeIsInvalid, node.Import);
                 }
                 var importDefaultValue = $"${module.Replace(".", "-")}::{export}";
 
                 // validate module name
                 if(ModuleInfo.TryParse(module, out var moduleInfo)) {
                     if(moduleInfo.Version != null) {
-
-                        // TODO: move to Error.cs
-                        _builder.Log(new Error(0, "'Import' attribute cannot have a version"), node.Import);
+                        _builder.Log(Error.ParameterImportAttributeCannotHaveVersion, node.Import);
                     }
                     if(moduleInfo.Origin != null) {
-
-                        // TODO: move to Error.cs
-                        _builder.Log(new Error(0, "'Import' attribute cannot have an origin"), node.Import);
+                        _builder.Log(Error.ParameterImportAttributeCannotHaveOrigin, node.Import);
                     }
                 } else {
-
-                    // TODO: move to Error.cs
-                    _builder.Log(new Error(0, "invalid 'Import' attribute"), node.Import);
+                    _builder.Log(Error.ParameterImportAttributeIsInvalid, node.Import);
                 }
                 if(node.Default != null) {
-
-                    // TODO: move to Error.cs
-                    _builder.Log(new Error(0, "cannot use 'Default' attribute with 'Import'"), node.Import);
+                    _builder.Log(Error.ParameterDefaultAttributeCannotUseWithImportAttribute, node.Import);
                 } else {
                     node.Default = Fn.Literal(importDefaultValue);
                 }
@@ -255,15 +243,11 @@ namespace LambdaSharp.Tool.Compiler.Analyzers {
                     // add conditional resource
                     var resourceDeclaration = AddDeclaration(node, new ResourceDeclaration(Fn.Literal("Resource")) {
                         Type = Fn.Literal(node.Type.Value),
-
-                        // TODO: should the data-structure be cloned?
                         Properties = node.Properties,
 
                         // TODO: set 'arnAttribute' for resource (default attribute to return when referencing the resource),
 
                         If = Fn.Condition(conditionDeclaration.FullName),
-
-                        // TODO: should the data-structure be cloned?
                         Pragmas = node.Pragmas
                     });
 

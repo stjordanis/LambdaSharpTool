@@ -199,16 +199,9 @@ namespace LambdaSharp.Tool.Compiler.Syntax {
     internal class LiteralExpression : AValueExpression {
 
         //--- Constructors ---
-        public LiteralExpression(string value) : this(value, LiteralType.String) { }
-
         public LiteralExpression(string value, LiteralType type) {
             Value = value ?? throw new ArgumentNullException(nameof(value));
             Type = type;
-        }
-
-        public LiteralExpression(int value) {
-            Value = value.ToString();
-            Type = LiteralType.Integer;
         }
 
         //--- Properties ---

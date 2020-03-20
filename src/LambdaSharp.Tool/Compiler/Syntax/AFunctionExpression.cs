@@ -595,7 +595,6 @@ namespace LambdaSharp.Tool.Compiler.Syntax {
             }
         }
 
-        // TODO: I don't think we need this anymore
         public bool Resolved { get; set; }
 
         //--- Methods ---

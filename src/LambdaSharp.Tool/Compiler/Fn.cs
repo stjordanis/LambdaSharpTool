@@ -81,11 +81,15 @@ namespace LambdaSharp.Tool.Compiler {
             IfFalse = ifFalse ?? throw new ArgumentNullException(nameof(ifFalse))
         };
 
-        // TODO: consider inlining to allow SourceLocation to be set more easily
-        public static LiteralExpression Literal(string value) => new LiteralExpression(value);
+        public static LiteralExpression Literal(string value, SourceLocation? sourceLocation = null)
+            => new LiteralExpression(value, LiteralType.String) {
+                SourceLocation = sourceLocation
+            };
 
-        // TODO: consider inlining to allow SourceLocation to be set more easily
-        public static LiteralExpression Literal(int value) => new LiteralExpression(value);
+        public static LiteralExpression Literal(int value, SourceLocation? sourceLocation = null)
+            => new LiteralExpression(value.ToString(), LiteralType.Integer) {
+                SourceLocation = sourceLocation
+            };
 
         public static ListExpression LiteralList(params string[] values) => new ListExpression(values.Select(value => Literal(value)));
 
