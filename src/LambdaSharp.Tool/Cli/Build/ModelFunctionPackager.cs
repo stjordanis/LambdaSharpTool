@@ -91,11 +91,13 @@ namespace LambdaSharp.Tool.Cli.Build {
             public WebSocketSource WebSocketSource;
         }
 
-        //--- Class Methods ---
-        private static bool IsAmazonLinux2() {
+        //--- Class Fields ---
+        private static Lazy<bool> _isAmazonLinux2 = new Lazy<bool>(() => {
 
             // check if running on Linux OS
             if(RuntimeInformation.IsOSPlatform(OSPlatform.Linux)) {
+
+                // check if OS information file contains Amazon Linux string
                 try {
                     if(File.Exists(SYSTEM_OS_INFORMATION)) {
                         var osRelease = File.ReadAllText(SYSTEM_OS_INFORMATION);
@@ -104,7 +106,10 @@ namespace LambdaSharp.Tool.Cli.Build {
                 } catch { }
             }
             return false;
-        }
+        });
+
+        //--- Class Methods ---
+        private static bool IsAmazonLinux2() => _isAmazonLinux2.Value;
 
         //--- Fields ---
         private ModuleBuilder _builder;
@@ -588,6 +593,8 @@ namespace LambdaSharp.Tool.Cli.Build {
                 LogError("failed to find the \"dotnet\" executable in path.");
                 return false;
             }
+            var isNetCore31OrLater = targetFramework.CompareTo("netcoreapp3.1") >= 0;
+            var isAmazonLinux2 = IsAmazonLinux2();
 
             // NOTE: with --force-build, we need to explicitly invoke `dotnet build` to pass in the `--no-incremental` and `--force` options;
             //  we do this to ensure that `dotnet build` doesn't create an invalid executable when environment variables, such as LAMBDASHARP, change between builds.
@@ -598,7 +605,11 @@ namespace LambdaSharp.Tool.Cli.Build {
                     "--force",
                     "--no-incremental",
                     "--configuration", buildConfiguration,
-                    "--framework", targetFramework
+                    "--framework", targetFramework,
+                    "--runtime", isNetCore31OrLater ? "linux-x64" : "rhel.7.2-x64",
+                    (isAmazonLinux2 && isNetCore31OrLater)
+                        ? "/p:PublishReadyToRun=true"
+                        : ""
                 },
                 projectDirectory,
                 Settings.VerboseLevel >= VerboseLevel.Detailed
@@ -616,7 +627,7 @@ namespace LambdaSharp.Tool.Cli.Build {
                     "--disable-interactive", "true",
 
                     // create a read-to-run package when compiling on Amazon Linux 2
-                    "--msbuild-parameters", IsAmazonLinux2()
+                    "--msbuild-parameters", (isAmazonLinux2 && isNetCore31OrLater)
                         ? "/p:PublishReadyToRun=true --self-contained false"
                         : "\"\""
                 },
