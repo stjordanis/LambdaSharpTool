@@ -593,8 +593,23 @@ namespace LambdaSharp.Tool.Cli.Build {
                 LogError("failed to find the \"dotnet\" executable in path.");
                 return false;
             }
-            var isNetCore31OrLater = targetFramework.CompareTo("netcoreapp3.1") >= 0;
+            var isNetCore31OrLater = targetFramework.CompareTo("netcoreapp3.") >= 0;
             var isAmazonLinux2 = IsAmazonLinux2();
+
+            // set MSBuild optimization parameters
+            var msBuildParametersList = new List<string>();
+            if(isNetCore31OrLater) {
+
+                // allows disable tiered compilation since Lambda functions are generally short lived
+                msBuildParametersList.Add("/p:TieredCompilation=false");
+                msBuildParametersList.Add("/p:TieredCompilationQuickJit=false");
+
+                // enable Ready2Run when compiling on Amazon Linux 2
+                if(isAmazonLinux2) {
+                    msBuildParametersList.Add("/p:PublishReadyToRun=true");
+                }
+            }
+            var msBuildParameters = string.Join(" ", msBuildParametersList);
 
             // NOTE: with --force-build, we need to explicitly invoke `dotnet build` to pass in the `--no-incremental` and `--force` options;
             //  we do this to ensure that `dotnet build` doesn't create an invalid executable when environment variables, such as LAMBDASHARP, change between builds.
@@ -607,9 +622,7 @@ namespace LambdaSharp.Tool.Cli.Build {
                     "--configuration", buildConfiguration,
                     "--framework", targetFramework,
                     "--runtime", isNetCore31OrLater ? "linux-x64" : "rhel.7.2-x64",
-                    (isAmazonLinux2 && isNetCore31OrLater)
-                        ? "/p:PublishReadyToRun=true"
-                        : ""
+                    msBuildParameters
                 },
                 projectDirectory,
                 Settings.VerboseLevel >= VerboseLevel.Detailed
@@ -625,11 +638,7 @@ namespace LambdaSharp.Tool.Cli.Build {
                     "--framework", targetFramework,
                     "--output-package", outputPackagePath,
                     "--disable-interactive", "true",
-
-                    // create a read-to-run package when compiling on Amazon Linux 2
-                    "--msbuild-parameters", (isAmazonLinux2 && isNetCore31OrLater)
-                        ? "/p:PublishReadyToRun=true --self-contained false"
-                        : "\"\""
+                    "--msbuild-parameters", $"\"{msBuildParameters}\""
                 },
                 projectDirectory,
                 Settings.VerboseLevel >= VerboseLevel.Detailed
