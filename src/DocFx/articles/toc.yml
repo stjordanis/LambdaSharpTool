@@ -4,6 +4,9 @@
 - name: Why LambdaSharp?
   href: WhyLambdaSharp.md
 
+- name: Using Amazon Linux 2 on WSL
+  href: Amazon-Linux-2-WSL.md
+
 - name: Video Tutorials
   href: VideoTutorials.md
 
