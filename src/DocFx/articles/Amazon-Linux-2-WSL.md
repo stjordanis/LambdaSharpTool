@@ -35,7 +35,7 @@ The following steps install .NET Core 3.1, some utilities, and LambdaSharp.
     ```
 1. Install .NET Core 3.1 and misc. required utilities
     ```bash
-    yum install -y dotnet-sdk-3.1 git zip
+    yum install -y dotnet-sdk-3.1 dotnet-runtime-3.1 git zip
     ```
 1. Install LambdaSharp
     ```bash
