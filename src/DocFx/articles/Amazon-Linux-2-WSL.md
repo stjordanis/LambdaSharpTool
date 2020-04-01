@@ -50,8 +50,8 @@ Visual Studio Code supports [remote development](https://code.visualstudio.com/d
     ```bash
     yum install -y wget glibc libgcc libstdc++ python ca-certificates tar
     ```
-1. Switch to the host drive and invoke the `code` command, which triggers the installation of the _VS Code Remote_ extension
+1. Invoke `code` command to trigger the installation of the _VS Code Remote_ extension
     ```bash
-    cd /mnt/c
-    code .
+    code
     ```
+1. Click _Allow Access_ when prompted by _Windows Defender_.
